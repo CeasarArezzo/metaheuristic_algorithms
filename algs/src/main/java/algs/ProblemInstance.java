@@ -6,17 +6,17 @@ import lombok.Data;
 public class ProblemInstance
 {
     private final int[][] graphMatrix;
-    private final String name, type, edge_weight_type, display_data_type;
+    private final String name, type, edge_weight_type, edge_weight_format;
     private final int dimension;
 
 
-    public ProblemInstance(int[][] graphMatrix, String name, String type, String edge_weight_type, String display_data_type, int dimension)
+    public ProblemInstance(int[][] graphMatrix, String name, String type, String edge_weight_type, String edge_weight_format, int dimension)
     {
         this.graphMatrix = graphMatrix;
         this.name = name;
         this.type = type;
         this.edge_weight_type = edge_weight_type;
-        this.display_data_type = display_data_type;
+        this.edge_weight_format = edge_weight_format;
         this.dimension = dimension;
     }
 }

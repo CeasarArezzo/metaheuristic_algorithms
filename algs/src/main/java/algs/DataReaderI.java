@@ -1,4 +1,4 @@
-package main.java.algs;
+package algs;
 
 import java.io.File;
 import java.io.FileNotFoundException;

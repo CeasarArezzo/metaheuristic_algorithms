@@ -1,6 +1,4 @@
-package main.java.algs;
-
-import java.io.FileNotFoundException;
+package algs;
 
 public class MetaAlgs
 {

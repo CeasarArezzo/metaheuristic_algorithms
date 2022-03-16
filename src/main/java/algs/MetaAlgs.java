@@ -1,5 +1,7 @@
 package algs;
 
+import algs.Parser.DataReader;
+
 public class MetaAlgs
 {
     

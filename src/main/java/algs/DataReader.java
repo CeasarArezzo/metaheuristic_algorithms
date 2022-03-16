@@ -1,7 +1,6 @@
 package algs;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -9,20 +8,8 @@ import java.util.Scanner;
 
 public interface DataReader 
 {
-    enum PROBLEM_TYPE
-    {
-        TSP, ATSP
-    }
 
-    enum EDGE_WEIGHT_FORMAT_TSP
-    {
-        FULL_MATRIX, LOWER_DIAG_ROW, EMPTY
-    }
-
-    enum EDGE_WEIGHT_TYPE_TSP
-    {
-        EXPLICIT, EUC_2D
-    }
+    int[][] readInstance(Scanner scanner, int dimension, String currLine) throws Exception;
 
     static ProblemInstance readFileForGraphMatrix(String path) throws Exception
     {
@@ -48,125 +35,44 @@ public interface DataReader
         {
             edge_weight_format = dictionary.get("EDGE_WEIGHT_FORMAT");
         }
+        ProblemTypeE problemType = ProblemTypeE.valueOf(type);
+        EdgeWeightFormatE formatType = EdgeWeightFormatE.valueOf(edge_weight_format);
+        EdgeWeightTypeE typeType = EdgeWeightTypeE.valueOf(edge_weight_type);
 
-        int[][] dataMatrix;
-        PROBLEM_TYPE problemType = PROBLEM_TYPE.valueOf(type);
-        EDGE_WEIGHT_FORMAT_TSP formatType = EDGE_WEIGHT_FORMAT_TSP.valueOf(edge_weight_format);
-        EDGE_WEIGHT_TYPE_TSP typeType = EDGE_WEIGHT_TYPE_TSP.valueOf(edge_weight_type);
-
-        dataMatrix = switch (problemType)
+        DataReader dataReader = switch (problemType)
                 {
-                    case TSP -> readTspProblem(scanner,  dimension, formatType, typeType, nextLine);
-                    case ATSP -> readAtspProblem(scanner,  dimension);
+                    case TSP -> readTspProblem(formatType, typeType);
+                    case ATSP -> readAtspProblem();
                 };
 
 
-        return new ProblemInstance(dataMatrix, name, type, edge_weight_type, edge_weight_format, dimension); //DUMMY
+        return new ProblemInstance(dataReader.readInstance(scanner, dimension, nextLine), name, type, edge_weight_type, edge_weight_format, dimension); //DUMMY
     }
 
-    static int[][] readAtspProblem(Scanner scanner, int dimension)
+    static DataReader readAtspProblem()
     {
-        return null; //DUMMY
+        return new FullMatrixReader(); //DUMMY
     }
 
-    static int[][] readTspProblem(Scanner scanner, int dimension, EDGE_WEIGHT_FORMAT_TSP edge_weight_format, EDGE_WEIGHT_TYPE_TSP edge_weight_type, String lastLine) throws Exception
+    static DataReader readTspProblem(EdgeWeightFormatE edge_weight_format, EdgeWeightTypeE edge_weight_type)
     {
-        int[][] dataMatrix;
 
-        dataMatrix = switch (edge_weight_type)
+        return switch (edge_weight_type)
         {
 
             case EXPLICIT ->  switch (edge_weight_format) {
-                case FULL_MATRIX -> readFullMatrixTsp(scanner, dimension, lastLine);
-                case LOWER_DIAG_ROW -> readLowerDiagRowTsp(scanner, dimension, lastLine);
+                case FULL_MATRIX -> new FullMatrixReader();
+                case LOWER_DIAG_ROW -> new LowerDiagRowReader();
                 default -> throw new IllegalStateException("Unexpected value: " + edge_weight_format);
             };
-            case EUC_2D -> readEuc2DTsp(scanner, dimension, lastLine);
+            case EUC_2D -> new Euc2dReader();
         };
 
-        return dataMatrix; //DUMMY
     }
 
-    static int[][] readEuc2DTsp(Scanner scanner, int dimension, String currLine) throws Exception
-    {
-        while(!currLine.equals("NODE_COORD_SECTION"))
-        {
-            currLine = scanner.nextLine();
-        }
-        double[][] cords = new double[dimension][2];
-        int iterator = 0;
-        while(scanner.hasNextDouble())
-        {
-            currLine = scanner.nextLine().replaceAll("\\s+", " ").trim();
 
-            String[] data = currLine.split(" ");
-            double xCord = Double.parseDouble(data[1]);
-            double yCord = Double.parseDouble(data[2]);
 
-            if (xCord != Math.ceil(xCord) || yCord != Math.ceil(yCord))
-            {
-                throw new Exception("REAL NUMBER");
-            }
 
-            cords[iterator][0] = xCord;
-            cords[iterator][1] = yCord;
-            iterator++;
-        }
 
-        int[][] dataMatrix = new int[dimension][dimension];
 
-        for(int i = 0; i < dimension; i++)
-        {
-            for(int j = 0; j < i; j++)
-            {
-                double xd = cords[i][0] - cords[j][0];
-                double yd = cords[i][1] - cords[j][1];
-                int dist = (int) (Math.sqrt(xd * xd + yd * yd) + 0.5);
-                dataMatrix[i][j] =  dist;
-                dataMatrix[j][i] =  dist;
-            }
-            dataMatrix[i][i] = 0;
-        }
-
-        return dataMatrix;
-    }
-
-    static int[][] readLowerDiagRowTsp(Scanner scanner, int dimension, String currLine)
-    {
-        while(!currLine.equals("EDGE_WEIGHT_SECTION"))
-        {
-            currLine = scanner.nextLine();
-        }
-
-        int[][] dataMatrix = new int[dimension][dimension];
-
-        for(int i = 0; i < dimension; i++)
-        {
-            for(int j = 0; j <= i; j++)
-            {
-                dataMatrix[i][j] = scanner.nextInt();
-                dataMatrix[j][i] = dataMatrix[i][j];
-            }
-        }
-        return dataMatrix;
-    }
-
-    static int[][] readFullMatrixTsp(Scanner scanner, int dimension, String currLine)
-    {
-        while(!currLine.equals("EDGE_WEIGHT_SECTION"))
-        {
-            currLine = scanner.nextLine();
-        }
-
-        int[][] dataMatrix = new int[dimension][dimension];
-
-        for(int i = 0; i < dimension; i++)
-        {
-            for(int j = 0; j < dimension; j++)
-            {
-                dataMatrix[i][j] = scanner.nextInt();
-            }
-        }
-        return dataMatrix;
-    }
 }

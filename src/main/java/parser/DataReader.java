@@ -1,4 +1,4 @@
-package algs.Parser;
+package parser;
 
 import algs.ProblemInstance;
 

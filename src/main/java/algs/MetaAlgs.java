@@ -1,6 +1,6 @@
 package algs;
 
-import algs.Parser.DataReader;
+import parser.DataReader;
 
 public class MetaAlgs
 {

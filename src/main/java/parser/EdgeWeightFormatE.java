@@ -1,4 +1,4 @@
-package algs.Parser;
+package parser;
 
 public enum EdgeWeightFormatE
 {

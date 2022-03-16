@@ -9,7 +9,6 @@ public class ProblemInstance
     private final String name, type, edge_weight_type, edge_weight_format;
     private final int dimension;
 
-
     public ProblemInstance(int[][] graphMatrix, String name, String type, String edge_weight_type, String edge_weight_format, int dimension)
     {
         this.graphMatrix = graphMatrix;

@@ -10,16 +10,15 @@ public class BasicTSPProblemGenerator implements ProblemGenerator
     @Override
     public ProblemInstance generateProblemInstance(int size)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return generateTSPProblemInstance(size);
     }
     
-    public ProblemInstance generateATSPProblemInstance(int size)
+    public ProblemInstance generateTSPProblemInstance(int size)
     {
-        return generateATSPProblemInstance(size, 6 * size);
+        return generateTSPProblemInstance(size, 6 * size);
     }
     
-    public ProblemInstance generateATSPProblemInstance(int size, int maxValue)
+    public ProblemInstance generateTSPProblemInstance(int size, int maxValue)
     {
         int[][] graphMatrix = new int[size][size];
         Random random = new Random();

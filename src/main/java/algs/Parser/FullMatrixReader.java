@@ -1,11 +1,13 @@
-package algs;
+package algs.Parser;
+
+import algs.Parser.DataReader;
 
 import java.util.Scanner;
 
 public class FullMatrixReader implements DataReader
 {
     @Override
-    public int[][] readInstance(Scanner scanner, int dimension, String currLine) throws Exception
+    public int[][] readInstance(Scanner scanner, int dimension, String currLine)
     {
         return readFullMatrixTsp(scanner, dimension, currLine);
     }

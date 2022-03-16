@@ -1,4 +1,6 @@
-package algs;
+package algs.Parser;
+
+import algs.ProblemInstance;
 
 import java.io.File;
 

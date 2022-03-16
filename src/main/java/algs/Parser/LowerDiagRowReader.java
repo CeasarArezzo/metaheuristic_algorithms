@@ -1,4 +1,6 @@
-package algs;
+package algs.Parser;
+
+import algs.Parser.DataReader;
 
 import java.util.Scanner;
 
@@ -6,7 +8,7 @@ public class LowerDiagRowReader implements DataReader
 {
 
     @Override
-    public int[][] readInstance(Scanner scanner, int dimension, String currLine) throws Exception
+    public int[][] readInstance(Scanner scanner, int dimension, String currLine)
     {
         return readLowerDiagRowTsp(scanner, dimension, currLine);
     }

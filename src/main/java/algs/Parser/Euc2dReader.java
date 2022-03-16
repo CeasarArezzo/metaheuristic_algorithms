@@ -1,4 +1,4 @@
-package algs;
+package algs.Parser;
 
 import java.util.Scanner;
 

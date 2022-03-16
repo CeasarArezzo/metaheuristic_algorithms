@@ -19,4 +19,9 @@ public class ProblemInstance
         this.edge_weight_format = edge_weight_format;
         this.dimension = dimension;
     }
+
+    public int[][] getGraphMatrix()
+    {
+        return graphMatrix;
+    }
 }

@@ -4,20 +4,20 @@ import java.util.ArrayList;
 
 import algs.ProblemInstance;
 
-public class TSPSolution
+public class ProblemSolution
 {
     int startingPoint;
     ArrayList<Integer> path;
     ProblemInstance problemInstance;
     
-    public TSPSolution(ProblemInstance pInstance)
+    public ProblemSolution(ProblemInstance pInstance)
     {
         this.startingPoint = 0;
         this.problemInstance = pInstance;
         path = new ArrayList<>();
     }
     
-    public TSPSolution(int startingPoint, ProblemInstance pInstance)
+    public ProblemSolution(int startingPoint, ProblemInstance pInstance)
     {
         this.startingPoint = startingPoint;
         this.problemInstance = pInstance;

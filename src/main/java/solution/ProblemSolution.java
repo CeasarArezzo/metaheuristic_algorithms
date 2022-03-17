@@ -7,6 +7,7 @@ import algs.ProblemInstance;
 public class ProblemSolution
 {
     int startingPoint;
+    int objectiveValue;
     ArrayList<Integer> path;
     ProblemInstance problemInstance;
     
@@ -23,32 +24,41 @@ public class ProblemSolution
         this.problemInstance = pInstance;
         path = new ArrayList<>();
     }
-    
+
+    public ProblemSolution(int startingPoint, int objectiveValue, ProblemInstance pInstance)
+    {
+        this.startingPoint = startingPoint;
+        this.objectiveValue = objectiveValue;
+        this.problemInstance = pInstance;
+        path = new ArrayList<>();
+    }
+
+
     void addStep(int nextVertex)
     {
         path.add(nextVertex);
     }
     
-    int getObjectiveValue()
+    public int getObjectiveValue()
     {
         int value = 0;
         int lastVertex = startingPoint;
-        for (int i = 0; i < path.size(); i++)
+        for (Integer integer : path)
         {
-            value += problemInstance.getGraphMatrix()[lastVertex][path.get(i)];
-            lastVertex = path.get(i);
+            value += problemInstance.getGraphMatrix()[lastVertex][integer];
+            lastVertex = integer;
         }
         return value;
     }
     
-    static int getObjectiveValue(int startingPoint, ArrayList<Integer> path, ProblemInstance problemInstance)
+    public static int getObjectiveValue(int startingPoint, ArrayList<Integer> path, ProblemInstance problemInstance)
     {
         int value = 0;
         int lastVertex = startingPoint;
-        for (int i = 0; i < path.size(); i++)
+        for (Integer integer : path)
         {
-            value += problemInstance.getGraphMatrix()[lastVertex][path.get(i)];
-            lastVertex = path.get(i);
+            value += problemInstance.getGraphMatrix()[lastVertex][integer];
+            lastVertex = integer;
         }
         return value;
     }

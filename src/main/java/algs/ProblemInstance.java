@@ -18,10 +18,20 @@ public class ProblemInstance
         this.edge_weight_type = edge_weight_type;
         this.edge_weight_format = edge_weight_format;
         this.dimension = dimension;
-    }
+    }    
 
     public int[][] getGraphMatrix()
     {
         return graphMatrix;
+    }
+    
+    public int getValue(int column, int row)
+    {
+        return graphMatrix[column][row];
+    }
+    
+    public int getDimension()
+    {
+        return dimension;
     }
 }

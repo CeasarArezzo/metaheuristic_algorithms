@@ -27,7 +27,7 @@ public class KRandomSolver implements ProblemSolver
         for(int i = 0; i < numOfIterations; i++)
         {
             ArrayList<Integer> currPath = generateRandomPath(dimension);
-            int currValue = ProblemSolution.getObjectiveValue(currPath.get(0), currPath, problemInstance);
+            int currValue = ProblemSolution.getObjectiveValue(currPath.get(currPath.size()-1), currPath, problemInstance);
             if(currValue < bestValue)
             {
                 bestValue = currValue;

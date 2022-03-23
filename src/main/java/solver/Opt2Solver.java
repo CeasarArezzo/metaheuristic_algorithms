@@ -29,7 +29,7 @@ public class Opt2Solver implements ProblemSolver
             break;
         }
 
-        return new ProblemSolution(bestPath.get(0), bestNeighbour.objectiveValue, bestPath, problemInstance);
+        return new ProblemSolution(bestPath.get(bestPath.size()-1), bestNeighbour.objectiveValue, bestPath, problemInstance);
     }
 
     private NeighbourHolder getBestNeighbour(ArrayList<Integer> startingSolution, ProblemInstance problemInstance)
@@ -37,12 +37,12 @@ public class Opt2Solver implements ProblemSolver
         ArrayList<ArrayList<Integer>> neighbours = generateAllNeighbours(startingSolution, problemInstance);
         int dimension = problemInstance.getDimension();   
         ArrayList<Integer> bestNeighbour = neighbours.get(0);
-        int bestNeighbourValue = ProblemSolution.getObjectiveValue(bestNeighbour.get(0), bestNeighbour, problemInstance);
+        int bestNeighbourValue = ProblemSolution.getObjectiveValue(bestNeighbour.get(bestNeighbour.size()-1), bestNeighbour, problemInstance);
         
         for(int i = 1; i < dimension; i++)
         {
             ArrayList<Integer> currNeighbour = neighbours.get(i);
-            int currValue = ProblemSolution.getObjectiveValue(currNeighbour.get(0), currNeighbour, problemInstance);
+            int currValue = ProblemSolution.getObjectiveValue(currNeighbour.get(currNeighbour.size()-1), currNeighbour, problemInstance);
 
             if( currValue > bestNeighbourValue)
             {

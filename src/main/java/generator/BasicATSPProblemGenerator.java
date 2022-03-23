@@ -3,6 +3,9 @@ package generator;
 import java.util.Random;
 
 import algs.ProblemInstance;
+import parser.EdgeWeightFormatE;
+import parser.EdgeWeightTypeE;
+import parser.ProblemTypeE;
 
 public class BasicATSPProblemGenerator implements ProblemGenerator
 {
@@ -33,7 +36,7 @@ public class BasicATSPProblemGenerator implements ProblemGenerator
         }
         
         String name = "RandomATSP(" + size + ")";
-        return new ProblemInstance(graphMatrix, name, "RandomATSP", null, null, size);
+        return new ProblemInstance(graphMatrix, name, ProblemTypeE.ATSP, EdgeWeightTypeE.NONE, EdgeWeightFormatE.NONE, size);
     }
     
 }

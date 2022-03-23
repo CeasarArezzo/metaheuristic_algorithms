@@ -1,24 +1,73 @@
 package algs;
 
+import generator.BasicATSPProblemGenerator;
+import generator.BasicTSPProblemGenerator;
+import generator.ProblemGenerator;
+import generator.RandomTypeE;
 import parser.DataReader;
 
 public class MetaAlgs
 {
+    private boolean generateRandom = false;
+    static String algVersion = "";
     
     public static void main(String[] args)
     {
         System.out.println(System.getProperty("user.dir"));
-        args[0] = "C:\\Users\\ceasa\\git\\metaheuristic_algorithms\\data\\tsp\\bier127.tsp\\bier127.tsp";
+        ProblemInstance problemInstance = null;
+        
+//        args[0] = "data\\tsp\\bier127.tsp\\bier127.tsp";
 //        args.
-        try
+        
+        algVersion = hasOption(args, "-a=");
+        if( !algVersion.isEmpty() )
         {
-            ProblemInstance pi = DataReader.readFileForGraphMatrix(args[0]);
+            RandomTypeE type = RandomTypeE.valueOf(algVersion);
+            int size = Integer.parseInt(hasOption(args, "-size="));
+            problemInstance = generateRandomProblemInstance(type, size);
         }
-        catch (Exception e)
+        else 
         {
-            System.out.println(e.getMessage());
+            try
+            {
+                problemInstance = DataReader.readFileForGraphMatrix(args[0]);
+            }
+            catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
 
+    }
+
+    private static ProblemInstance generateRandomProblemInstance(RandomTypeE type, int size)
+    {
+        ProblemGenerator problemGenerator = null;
+        switch(type)
+        {
+            case RandomATSP: 
+                problemGenerator = new BasicATSPProblemGenerator();
+                break;
+            case RandomTSP:
+                problemGenerator = new BasicTSPProblemGenerator();
+                break;
+            default:
+                problemGenerator = new BasicTSPProblemGenerator();
+                break;
+        }
+        return problemGenerator.generateProblemInstance(size);
+    }
+
+    private static String hasOption(String[] args, String prefix)
+    {
+        for (String iterator : args)
+        {
+            if (iterator.startsWith(prefix))
+            {
+                return iterator.substring(prefix.length());
+            }
+        }
+        return "";
     }
 
     

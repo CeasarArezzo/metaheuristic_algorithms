@@ -42,9 +42,14 @@ public class ProblemSolution
     }
 
 
-    void addStep(int nextVertex)
+    public void addStep(int nextVertex)
     {
         path.add(nextVertex);
+    }
+    
+    public ArrayList<Integer> getPath()
+    {
+        return path;
     }
     
     public int getObjectiveValue()

@@ -27,7 +27,7 @@ public class KRandomSolver implements ProblemSolver
         for(int i = 0; i < numOfIterations; i++)
         {
             ArrayList<Integer> currPath = generateRandomPath(dimension);
-            int currValue = ProblemSolution.getObjectiveValue(currPath.get(0), currPath, problemInstance);
+            int currValue = ProblemSolution.getObjectiveValue(currPath.get(currPath.size()-1), currPath, problemInstance);
             if(currValue < bestValue)
             {
                 bestValue = currValue;
@@ -35,16 +35,8 @@ public class KRandomSolver implements ProblemSolver
             }
         }
 
-        return new ProblemSolution(bestPath.get(0), bestValue, problemInstance);
+        return new ProblemSolution(bestPath.get(0), bestValue, bestPath, problemInstance);
     }
 
-    public ArrayList<Integer> generateRandomPath(int dimension)
-    {
-        List<Integer> range = IntStream.rangeClosed(0, dimension - 1)
-                .boxed().toList();
 
-        java.util.Collections.shuffle(range);
-
-        return new ArrayList<>(range);
-    }
 }

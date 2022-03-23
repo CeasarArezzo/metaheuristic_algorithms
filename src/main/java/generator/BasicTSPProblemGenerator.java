@@ -3,6 +3,10 @@ package generator;
 import java.util.Random;
 
 import algs.ProblemInstance;
+import parser.EdgeWeightFormatE;
+import parser.EdgeWeightTypeE;
+import parser.ProblemTypeE;
+
 
 public class BasicTSPProblemGenerator implements ProblemGenerator
 {
@@ -34,7 +38,7 @@ public class BasicTSPProblemGenerator implements ProblemGenerator
         }
         
         String name = "RandomTSP(" + size + ")";
-        return new ProblemInstance(graphMatrix, name, "RandomTSP", null, null, size);
+        return new ProblemInstance(graphMatrix, name, ProblemTypeE.TSP, EdgeWeightTypeE.NONE, EdgeWeightFormatE.NONE, size);
     }
     
 }

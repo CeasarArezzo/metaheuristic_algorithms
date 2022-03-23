@@ -25,6 +25,14 @@ public class ProblemSolution
         path = new ArrayList<>();
     }
 
+    public ProblemSolution(int startingPoint, int objectiveValue, ArrayList<Integer> path, ProblemInstance pInstance)
+    {
+        this.startingPoint = startingPoint;
+        this.problemInstance = pInstance;
+        this.path = path;
+        this.objectiveValue = objectiveValue;
+    }
+
     public ProblemSolution(int startingPoint, int objectiveValue, ProblemInstance pInstance)
     {
         this.startingPoint = startingPoint;

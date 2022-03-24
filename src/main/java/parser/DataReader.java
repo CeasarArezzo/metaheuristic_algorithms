@@ -48,7 +48,7 @@ public interface DataReader
                 };
 
 
-        return new ProblemInstance(dataReader.readInstance(scanner, dimension, nextLine), name, type, edge_weight_type, edge_weight_format, dimension); //DUMMY
+        return new ProblemInstance(dataReader.readInstance(scanner, dimension, nextLine), name, problemType, typeType, formatType, dimension); //DUMMY
     }
 
     static DataReader readAtspProblem()
@@ -68,6 +68,7 @@ public interface DataReader
                 default -> throw new IllegalStateException("Unexpected value: " + edge_weight_format);
             };
             case EUC_2D -> new Euc2dReader();
+            default -> throw new IllegalStateException("Unexpected value: " + edge_weight_type);
         };
 
     }

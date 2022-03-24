@@ -1,5 +1,6 @@
 package algs;
 
+import experiment.KRandomExperiment;
 import generator.BasicATSPProblemGenerator;
 import generator.BasicTSPProblemGenerator;
 import generator.ProblemGenerator;
@@ -11,6 +12,13 @@ public class MetaAlgs
     private boolean generateRandom = false;
     static String algVersion = "";
     
+//    TODO:
+//    wartoœæ funkcji celu / rozmiar
+//    wartoœæ funkcji celu z normalizacj¹ / rozmiar
+//    z³o¿onoœæ obliczeniowa / rozmiar
+//    k random / k
+
+    
     public static void main(String[] args)
     {
         System.out.println(System.getProperty("user.dir"));
@@ -18,6 +26,12 @@ public class MetaAlgs
         
 //        args[0] = "data\\tsp\\bier127.tsp\\bier127.tsp";
 //        args.
+        
+        if (hasOption(args, "kRand").isEmpty())
+        {
+            KRandomExperiment.generateData(0, 0, 0, 0, 0, 0, System.getProperty("user.dir") + "\\dupa.txt");
+            return;
+        }
         
         algVersion = hasOption(args, "-a=");
         if( !algVersion.isEmpty() )

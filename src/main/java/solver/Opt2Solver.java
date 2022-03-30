@@ -71,7 +71,15 @@ public class Opt2Solver implements ProblemSolver
         return neighbours;
     }
 
-    private record NeighbourHolder(ArrayList<Integer> path, int objectiveValue)
+    private class NeighbourHolder
     {
+        ArrayList<Integer> path;
+        int objectiveValue;
+
+        NeighbourHolder(ArrayList<Integer> path, int objectiveValue)
+        {
+            this.path = path;
+            this.objectiveValue = objectiveValue;
+        }
     }
 }

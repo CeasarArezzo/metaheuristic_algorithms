@@ -2,6 +2,7 @@ package algs;
 
 import experiment.AllObjectiveValExperiment;
 import experiment.KRandomExperiment;
+import experiment.TimeComplexityExperiment;
 import generator.BasicATSPProblemGenerator;
 import generator.BasicTSPProblemGenerator;
 import generator.ProblemGenerator;
@@ -31,12 +32,15 @@ public class MetaAlgs
         if (hasOption(args, "kRand"))
         {
             KRandomExperiment.generateData();
-            return;
         }
-
         if (hasOption(args, "AllOV"))
         {
             AllObjectiveValExperiment.generateData();
+        }
+        if (hasOption(args, "TimeComplex"))
+        {
+            System.out.println("TimeComplex");
+            TimeComplexityExperiment.generateData();
         }
         
 

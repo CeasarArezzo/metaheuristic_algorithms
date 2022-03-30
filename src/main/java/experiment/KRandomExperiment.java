@@ -12,11 +12,13 @@ import solver.KRandomSolver;
 
 public class KRandomExperiment
 {
+    static final int ITERATIONS = 500;
+    
     public static void generateData()
     {
         try
         {
-            String filePath = System.getProperty("user.dir") + "\\results\\";
+            String filePath = System.getProperty("user.dir") + "/results/";
             
             int[] sizes = {10, 25, 50, 75, 100, 150, 350};
             
@@ -25,11 +27,11 @@ public class KRandomExperiment
                 String filename = filePath + "KRandomExp" + size + ".txt";
                 PrintWriter writer =  new PrintWriter(filename, StandardCharsets.UTF_8);
                 ProblemInstance pI = getProblemInstance(size);
-                for (int k = 10; k <= 150; k+=10)
+                for (int k = 10; k <= ITERATIONS; k+=10)
                 {
                     KRandomSolver solver = new KRandomSolver(k);
                     ProblemSolution solution = solver.solveInstance(pI);
-                    writer.write(k + " " + solution.getObjectiveValue());
+                    writer.write(k + " " + solution.getObjectiveValue() + "\n");
                 }
                 writer.close();
             }
@@ -42,7 +44,7 @@ public class KRandomExperiment
 
     private static ProblemInstance getProblemInstance(int size)
     {
-        String filepath = System.getProperty("user.dir") + "\\data\\atsp\\";
+        String filepath = System.getProperty("user.dir") + "/data/atsp/";
         ProblemInstance pI = null;
         try
         {

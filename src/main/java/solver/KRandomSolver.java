@@ -23,7 +23,7 @@ public class KRandomSolver implements ProblemSolver
         int dimension = problemInstance.getDimension();
 
         ArrayList<Integer> bestPath = new ArrayList<>();
-        int bestValue = 0;
+        int bestValue = Integer.MAX_VALUE;
         for(int i = 0; i < numOfIterations; i++)
         {
             ArrayList<Integer> currPath = generateRandomPath(dimension);

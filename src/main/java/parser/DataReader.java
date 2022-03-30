@@ -31,7 +31,7 @@ public interface DataReader
         String type = dictionary.get("TYPE");
         int dimension = Integer.parseInt(dictionary.get("DIMENSION"));
         String edge_weight_type = dictionary.get("EDGE_WEIGHT_TYPE");
-        String edge_weight_format = "EMPTY";
+        String edge_weight_format = "NONE";
 
         if(edge_weight_type.equals("EXPLICIT"))
         {

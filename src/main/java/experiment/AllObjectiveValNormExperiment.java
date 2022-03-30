@@ -5,15 +5,16 @@ import generator.BasicATSPProblemGenerator;
 import generator.BasicTSPProblemGenerator;
 import parser.DataReader;
 import parser.WrongNumberException;
-import solution.ProblemSolution;
 import solver.*;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.stream.IntStream;
+import java.util.Collections;
 
-public class AllObjectiveValExperiment
+public class AllObjectiveValNormExperiment
 {
 
     public static void generateData()
@@ -24,7 +25,7 @@ public class AllObjectiveValExperiment
 
 
 
-            String filename = filePath + "AllObjectiveValExp" + ".txt";
+            String filename = filePath + "AllObjectiveValNormExp" + ".txt";
             PrintWriter writer = new PrintWriter(filename, StandardCharsets.UTF_8);
             writer.println("SIZE KRANDOM OPT2 NEIGH ENCHNEIGH");
             for (int size = 10; size <= 250; size += 10)
@@ -38,12 +39,19 @@ public class AllObjectiveValExperiment
                 problemSolvers.add(new EnhancedNeighSolver());
 
                 ProblemInstance pI = getProblemInstance(size);
+                ArrayList<Integer> objectiveValues = new ArrayList<>();
 
                 for(ProblemSolver solver: problemSolvers)
                 {
-                    writer.print(solver.solveInstance(pI).getObjectiveValue() + " ");
+                    objectiveValues.add(solver.solveInstance(pI).getObjectiveValue());
                 }
-                System.out.println(size);
+                int min =  Collections.min(objectiveValues);
+
+                for(int objectiveVal: objectiveValues)
+                {
+                    float prd = (((float)objectiveVal - (float)min) * 100.0f) / (float)min;
+                    writer.print(prd + " ");
+                }
                 writer.println();
 
             }

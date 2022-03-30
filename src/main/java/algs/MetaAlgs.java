@@ -1,6 +1,7 @@
 package algs;
 
 import experiment.AllObjectiveValExperiment;
+import experiment.AllObjectiveValNormExperiment;
 import experiment.KRandomExperiment;
 import generator.BasicATSPProblemGenerator;
 import generator.BasicTSPProblemGenerator;
@@ -37,8 +38,13 @@ public class MetaAlgs
         if (hasOption(args, "AllOV"))
         {
             AllObjectiveValExperiment.generateData();
+            return;
         }
-        
+
+        if (hasOption(args, "NAllOV"))
+        {
+            AllObjectiveValNormExperiment.generateData();
+        }
 
     }
 

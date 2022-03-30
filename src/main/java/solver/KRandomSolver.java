@@ -35,7 +35,7 @@ public class KRandomSolver implements ProblemSolver
             }
         }
 
-        return new ProblemSolution(bestPath.get(0), bestValue, bestPath, problemInstance);
+        return new ProblemSolution(bestPath.get(bestPath.size()-1), bestValue, bestPath, problemInstance);
     }
 
 

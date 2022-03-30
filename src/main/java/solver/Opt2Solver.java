@@ -14,7 +14,7 @@ public class Opt2Solver implements ProblemSolver
         int dimension = problemInstance.getDimension();
         ArrayList<Integer> startingSolution = generateRandomPath(dimension);
         ArrayList<Integer> bestPath = new ArrayList<>();
-        int bestValue = -1;
+        int bestValue = Integer.MAX_VALUE;
         NeighbourHolder bestNeighbour;
 
         while(true)

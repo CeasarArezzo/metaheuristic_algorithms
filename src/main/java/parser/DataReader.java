@@ -3,7 +3,7 @@ package parser;
 import algs.ProblemInstance;
 
 import java.io.File;
-
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -11,9 +11,9 @@ import java.util.Scanner;
 public interface DataReader 
 {
 
-    int[][] readInstance(Scanner scanner, int dimension, String currLine) throws Exception;
+    int[][] readInstance(Scanner scanner, int dimension, String currLine) throws WrongNumberException;
 
-    static ProblemInstance readFileForGraphMatrix(String path) throws Exception
+    static ProblemInstance readFileForGraphMatrix(String path) throws FileNotFoundException, WrongNumberException
     {
         File dataFile = new File(path);
         Scanner scanner = new Scanner(dataFile);

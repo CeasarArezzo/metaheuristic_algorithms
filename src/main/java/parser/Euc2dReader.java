@@ -6,12 +6,12 @@ public class Euc2dReader implements DataReader
 {
 
     @Override
-    public int[][] readInstance(Scanner scanner, int dimension, String currLine) throws Exception
+    public int[][] readInstance(Scanner scanner, int dimension, String currLine) throws WrongNumberException
     {
         return readEuc2DTsp(scanner, dimension, currLine);
     }
 
-    int[][] readEuc2DTsp(Scanner scanner, int dimension, String currLine) throws Exception
+    int[][] readEuc2DTsp(Scanner scanner, int dimension, String currLine) throws WrongNumberException
     {
         while(!currLine.equals("NODE_COORD_SECTION"))
         {
@@ -29,7 +29,7 @@ public class Euc2dReader implements DataReader
 
             if (xCord != Math.ceil(xCord) || yCord != Math.ceil(yCord))
             {
-                throw new Exception("REAL NUMBER");
+                throw new WrongNumberException("REAL NUMBER");
             }
 
             cords[iterator][0] = xCord;

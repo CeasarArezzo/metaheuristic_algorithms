@@ -14,8 +14,7 @@ import solver.KRandomSolver;
 
 public class KRandomExperiment
 {
-    public static void generateData(int sizeBegin, int sizeEnd, int sizeJump, 
-            int kBegin, int kEnd, int kJump)
+    public static void generateData()
     {
         try
         {

@@ -29,7 +29,7 @@ public class MetaAlgs
         
         if (hasOption(args, "kRand").isEmpty())
         {
-            KRandomExperiment.generateData(0, 0, 0, 0, 0, 0, System.getProperty("user.dir") + "\\dupa.txt");
+            KRandomExperiment.generateData();
             return;
         }
         

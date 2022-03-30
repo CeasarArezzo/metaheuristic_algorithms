@@ -1,5 +1,6 @@
 package algs;
 
+import experiment.AllObjectiveValExperiment;
 import experiment.KRandomExperiment;
 import generator.BasicATSPProblemGenerator;
 import generator.BasicTSPProblemGenerator;
@@ -13,9 +14,9 @@ public class MetaAlgs
     static String algVersion = "";
     
 //    TODO:
-//    wartoœæ funkcji celu / rozmiar
-//    wartoœæ funkcji celu z normalizacj¹ / rozmiar
-//    z³o¿onoœæ obliczeniowa / rozmiar
+//    wartoï¿½ï¿½ funkcji celu / rozmiar
+//    wartoï¿½ï¿½ funkcji celu z normalizacjï¿½ / rozmiar
+//    zï¿½oï¿½onoï¿½ï¿½ obliczeniowa / rozmiar
 //    k random / k
 
     
@@ -27,30 +28,17 @@ public class MetaAlgs
 //        args[0] = "data\\tsp\\bier127.tsp\\bier127.tsp";
 //        args.
         
-        if (hasOption(args, "kRand").isEmpty())
+        if (hasOption(args, "kRand"))
         {
             KRandomExperiment.generateData();
             return;
         }
+
+        if (hasOption(args, "AllOV"))
+        {
+            AllObjectiveValExperiment.generateData();
+        }
         
-        algVersion = hasOption(args, "-a=");
-        if( !algVersion.isEmpty() )
-        {
-            RandomTypeE type = RandomTypeE.valueOf(algVersion);
-            int size = Integer.parseInt(hasOption(args, "-size="));
-            problemInstance = generateRandomProblemInstance(type, size);
-        }
-        else 
-        {
-            try
-            {
-                problemInstance = DataReader.readFileForGraphMatrix(args[0]);
-            }
-            catch (Exception e)
-            {
-                System.out.println(e.getMessage());
-            }
-        }
 
     }
 
@@ -72,16 +60,16 @@ public class MetaAlgs
         return problemGenerator.generateProblemInstance(size);
     }
 
-    private static String hasOption(String[] args, String prefix)
+    private static boolean hasOption(String[] args, String prefix)
     {
         for (String iterator : args)
         {
             if (iterator.startsWith(prefix))
             {
-                return iterator.substring(prefix.length());
+                return true;
             }
         }
-        return "";
+        return false;
     }
 
     

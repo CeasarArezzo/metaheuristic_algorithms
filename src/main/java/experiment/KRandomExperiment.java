@@ -1,9 +1,7 @@
 package experiment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 import algs.ProblemInstance;
 import generator.BasicATSPProblemGenerator;
@@ -25,8 +23,7 @@ public class KRandomExperiment
             for (int size : sizes)
             {
                 String filename = filePath + "KRandomExp" + size + ".txt";
-                File outputFile = new File(filename);
-                FileWriter writer = new FileWriter(filename, false);
+                PrintWriter writer =  new PrintWriter(filename, StandardCharsets.UTF_8);
                 ProblemInstance pI = getProblemInstance(size);
                 for (int k = 10; k <= 150; k+=10)
                 {

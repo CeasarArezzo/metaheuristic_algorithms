@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import algs.ProblemInstance;
+
 import parser.EdgeWeightFormatE;
 import parser.EdgeWeightTypeE;
 import parser.ProblemTypeE;
@@ -22,8 +23,8 @@ public class EnhancedNeighSolverTest
         int[][] graph = { {0, 2, 3}, {2, 0, 10}, {4, 5, 0} };
         ProblemInstance pI = new ProblemInstance(graph, "", ProblemTypeE.ATSP, EdgeWeightTypeE.NONE, EdgeWeightFormatE.NONE, 3);
         
-        int[] solutions = {10, 10, 10};
-        
+        int[] solutions = {10};
+
         for (int i = 0; i < solutions.length; i++)
         {
             ProblemSolver solver = new EnhancedNeighSolver();

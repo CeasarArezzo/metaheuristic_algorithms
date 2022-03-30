@@ -50,21 +50,16 @@ public class KRandomExperiment
         {
             switch (size)
             {
-            case 17: 
-                pI = DataReader.readFileForGraphMatrix(filepath + "br17.atsp"); break;
-            case 33: 
-                pI = DataReader.readFileForGraphMatrix(filepath + "ftv33.atsp"); break;
-            case 55: 
-                pI = DataReader.readFileForGraphMatrix(filepath + "ftv55.atsp"); break;
-            case 70: 
-                pI = DataReader.readFileForGraphMatrix(filepath + "ftv70.atsp"); break;
-            case 124: 
-                pI = DataReader.readFileForGraphMatrix(filepath + "kro124p.atsp"); break;
-            case 403: 
-                pI = DataReader.readFileForGraphMatrix(filepath + "rbg403.atsp"); break;
-            default:
-                BasicATSPProblemGenerator generator = new BasicATSPProblemGenerator();
-                pI = generator.generateATSPProblemInstance(size);
+                case 17 -> pI = DataReader.readFileForGraphMatrix(filepath + "br17.atsp" + "/br17.atsp");
+                case 33 -> pI = DataReader.readFileForGraphMatrix(filepath + "ftv33.atsp" + "/ftv33.atsp");
+                case 55 -> pI = DataReader.readFileForGraphMatrix(filepath + "ftv55.atsp" + "/ftv55.atsp");
+                case 70 -> pI = DataReader.readFileForGraphMatrix(filepath + "ftv70.atsp" + "/ftv70.atsp");
+                case 124 -> pI = DataReader.readFileForGraphMatrix(filepath + "kro124p.atsp" + "/kro124p.atsp");
+                case 403 -> pI = DataReader.readFileForGraphMatrix(filepath + "rbg403.atsp" + "/rbg403.atsp");
+                default -> {
+                    BasicATSPProblemGenerator generator = new BasicATSPProblemGenerator();
+                    pI = generator.generateATSPProblemInstance(size);
+                }
             }
         }
         catch (WrongNumberException | FileNotFoundException e)

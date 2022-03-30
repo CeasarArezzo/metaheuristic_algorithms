@@ -1,6 +1,7 @@
 package algs;
 
 import experiment.AllObjectiveValExperiment;
+import experiment.AllObjectiveValNormExperiment;
 import experiment.KRandomExperiment;
 import experiment.TimeComplexityExperiment;
 import generator.BasicATSPProblemGenerator;
@@ -41,6 +42,10 @@ public class MetaAlgs
         {
             System.out.println("TimeComplex");
             TimeComplexityExperiment.generateData();
+        }
+        if (hasOption(args, "NAllOV"))
+        {
+            AllObjectiveValNormExperiment.generateData();
         }
         
 

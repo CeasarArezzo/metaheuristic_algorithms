@@ -8,7 +8,6 @@ import generator.BasicATSPProblemGenerator;
 import generator.BasicTSPProblemGenerator;
 import generator.ProblemGenerator;
 import generator.RandomTypeE;
-import parser.DataReader;
 
 public class MetaAlgs
 {
@@ -32,10 +31,12 @@ public class MetaAlgs
         
         if (hasOption(args, "kRand"))
         {
+            System.out.println("kRand");
             KRandomExperiment.generateData();
         }
         if (hasOption(args, "AllOV"))
         {
+            System.out.println("AllOV");
             AllObjectiveValExperiment.generateData();
         }
         if (hasOption(args, "TimeComplex"))
@@ -45,6 +46,7 @@ public class MetaAlgs
         }
         if (hasOption(args, "NAllOV"))
         {
+            System.out.println("NAllOV");
             AllObjectiveValNormExperiment.generateData();
         }
         

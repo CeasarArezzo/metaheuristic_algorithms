@@ -24,7 +24,7 @@ public class AllObjectiveValExperiment
 
 
 
-            String filename = filePath + "AllObjectiveValExpATSP" + ".txt";
+            String filename = filePath + "AllObjectiveValExpTSP" + ".txt";
             PrintWriter writer = new PrintWriter(filename, StandardCharsets.UTF_8);
             writer.println("SIZE KRANDOM OPT2 NEIGH ENCHNEIGH");
             for (int size = 10; size <= 250; size += 10)
@@ -43,7 +43,7 @@ public class AllObjectiveValExperiment
                 {
                     writer.print(solver.solveInstance(pI).getObjectiveValue() + " ");
                 }
-                System.out.println(size);
+//                System.out.println(size);
                 writer.println();
 
             }
@@ -56,7 +56,7 @@ public class AllObjectiveValExperiment
 
     private static ProblemInstance getProblemInstance(int size)
     {
-        BasicATSPProblemGenerator generator = new BasicATSPProblemGenerator();
-        return generator.generateATSPProblemInstance(size);
+        BasicTSPProblemGenerator generator = new BasicTSPProblemGenerator();
+        return generator.generateTSPProblemInstance(size);
     }
 }

@@ -1,5 +1,9 @@
 package algs;
 
+import java.io.FileNotFoundException;
+
+import org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest;
+
 import experiment.AllObjectiveValExperiment;
 import experiment.AllObjectiveValNormExperiment;
 import experiment.KRandomExperiment;
@@ -8,6 +12,10 @@ import generator.BasicATSPProblemGenerator;
 import generator.BasicTSPProblemGenerator;
 import generator.ProblemGenerator;
 import generator.RandomTypeE;
+import parser.DataReader;
+import parser.WrongNumberException;
+import solver.EnhancedNeighSolver;
+import solver.Opt2Solver;
 
 public class MetaAlgs
 {
@@ -24,9 +32,24 @@ public class MetaAlgs
     public static void main(String[] args)
     {
         System.out.println(System.getProperty("user.dir"));
-        ProblemInstance problemInstance = null;
-        
-//        args[0] = "data\\tsp\\bier127.tsp\\bier127.tsp";
+
+        double[] x = new double[51];
+        double[] y = new double[51]; 
+        for (int size = 1; size <= 25; size++)
+        {
+            System.out.println(size);
+            BasicTSPProblemGenerator generator = new BasicTSPProblemGenerator();
+            ProblemInstance pI = generator.generateTSPProblemInstance(size*10);
+            EnhancedNeighSolver solver1 = new EnhancedNeighSolver();
+            Opt2Solver solver2 = new Opt2Solver();
+            
+            x[size] = solver1.solveInstance(pI).getObjectiveValue();
+            y[size] = solver2.solveInstance(pI).getObjectiveValue();
+        }
+        System.out.println("a");
+        WilcoxonSignedRankTest tmp = new WilcoxonSignedRankTest();
+        double got = tmp.wilcoxonSignedRank(x, y);
+        System.out.println(got);
 //        args.
         
         if (hasOption(args, "kRand"))
@@ -49,6 +72,7 @@ public class MetaAlgs
             System.out.println("NAllOV");
             AllObjectiveValNormExperiment.generateData();
         }
+        
         
 
     }

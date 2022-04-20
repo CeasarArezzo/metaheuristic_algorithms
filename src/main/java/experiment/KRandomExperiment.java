@@ -20,7 +20,7 @@ public class KRandomExperiment
         {
             String filePath = System.getProperty("user.dir") + "/results/";
             
-            int[] sizes = {10, 25, 50, 75, 100, 150, 350};
+            int[] sizes = {17, 33, 55, 70, 100, 124, 403};
             
             for (int size : sizes)
             {
@@ -55,6 +55,7 @@ public class KRandomExperiment
                 case 55 -> pI = DataReader.readFileForGraphMatrix(filepath + "ftv55.atsp" + "/ftv55.atsp");
                 case 70 -> pI = DataReader.readFileForGraphMatrix(filepath + "ftv70.atsp" + "/ftv70.atsp");
                 case 124 -> pI = DataReader.readFileForGraphMatrix(filepath + "kro124p.atsp" + "/kro124p.atsp");
+                case 127 -> pI = DataReader.readFileForGraphMatrix(filepath + "bier127.tsp" + "/bier127.tsp");
                 case 403 -> pI = DataReader.readFileForGraphMatrix(filepath + "rbg403.atsp" + "/rbg403.atsp");
                 default -> {
                     BasicATSPProblemGenerator generator = new BasicATSPProblemGenerator();

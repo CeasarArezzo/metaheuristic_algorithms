@@ -38,6 +38,12 @@ public class BasicTabuList implements TabuList
     {
         return tabu.contains(swapToInt(swap1, swap2));
     }
+
+	@Override
+	public void clear() 
+	{
+		tabu.clear();
+	}
     
     private int swapToInt(int swap1, int swap2)
     {

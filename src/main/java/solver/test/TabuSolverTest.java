@@ -6,7 +6,6 @@ import parser.EdgeWeightFormatE;
 import parser.EdgeWeightTypeE;
 import parser.ProblemTypeE;
 import solution.ProblemSolution;
-import solver.Opt2Solver;
 import solver.ProblemSolver;
 import solver.TabuSolver;
 

@@ -15,7 +15,7 @@ public class TabuSolver implements ProblemSolver{
     private final int ageLimit;
     private final int iterations;
 
-    private final boolean isIterDecAlways;
+    private final boolean resetOnLocalBest;
 
     private final boolean isRemissionEnabled;
 
@@ -28,11 +28,12 @@ public class TabuSolver implements ProblemSolver{
     private int currentCost;
     ArrayList<Integer> previousLocalBest;
     private int previousLocalBestCost;
-    public TabuSolver(int ageLimit, int iterations, boolean isIterDecAfter, boolean isRemissionEnabled, boolean isSwapNeighbourhood)
+
+    public TabuSolver(int ageLimit, int iterations, boolean resetOnLocalBest, boolean isRemissionEnabled, boolean isSwapNeighbourhood)
     {
         this.ageLimit = ageLimit;
         this.iterations = iterations;
-        this.isIterDecAlways = isIterDecAfter;
+        this.resetOnLocalBest = resetOnLocalBest;
         this.isRemissionEnabled = isRemissionEnabled;
         this.isSwapNeighbourhood = isSwapNeighbourhood;
     }
@@ -70,7 +71,7 @@ public class TabuSolver implements ProblemSolver{
                     }
 
 
-                    ArrayList<Integer> newSolution = invert(i,j,localBest);
+                    ArrayList<Integer> newSolution = getNeighbour(i, j, localBest);
                     int newSolutionObjValue = ProblemSolution.getObjectiveValue(newSolution.get(newSolution.size()-1), newSolution, problemInstance);
                     if(newSolutionObjValue < localBestValue)
                     {
@@ -163,9 +164,10 @@ public class TabuSolver implements ProblemSolver{
 
     private int updateIterationCounter(int localBestValue, int iterationsLeft)
     {
-        if(isIterDecAlways || localBestValue < currentCost)
+        iterationsLeft--;
+        if(resetOnLocalBest && localBestValue < currentCost)
         {
-            iterationsLeft--;
+            iterationsLeft = iterations;
         }
 
         return iterationsLeft;

@@ -19,7 +19,7 @@ public class TabuSolverTest {
     {
         ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp" + "/a280.tsp");
             ProblemSolver opt = new Opt2Solver();
-            ProblemSolver solver = new TabuSolver(15, 500);
+            ProblemSolver solver = new TabuSolver(30, 1000);
             ProblemSolution solution = solver.solveInstance(pI);
             ProblemSolution optSolution = opt.solveInstance(pI);
             System.out.println(solution.getObjectiveValue());

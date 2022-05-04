@@ -63,9 +63,14 @@ public class TabuSolver implements ProblemSolver{
             {
                 currentSolution = new ArrayList<>(localBest);
                 currentCost = localBestValue;
+
+            }
+            else
+            {
+                iterationsLeft--;
             }
 
-            iterationsLeft--;
+
 
         }
 

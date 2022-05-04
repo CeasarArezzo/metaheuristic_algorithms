@@ -17,9 +17,9 @@ public class TabuSolverTest {
     @Test
     public void testSolveInstance() throws FileNotFoundException, WrongNumberException
     {
-        ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp");
+        ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/atsp/" + "ftv38.atsp");
         ProblemSolver opt = new Opt2Solver();
-        ProblemSolver solver = new TabuSolver(30, 1000, true, true);
+        ProblemSolver solver = new TabuSolver(30, 1000, true, true, false);
         ProblemSolution solution = solver.solveInstance(pI);
         ProblemSolution optSolution = opt.solveInstance(pI);
         System.out.println(solution.getObjectiveValue());

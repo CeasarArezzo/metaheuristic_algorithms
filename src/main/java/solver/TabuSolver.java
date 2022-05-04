@@ -19,22 +19,22 @@ public class TabuSolver implements ProblemSolver{
 
     private final boolean isRemissionEnabled;
 
+    private final boolean isSwapNeighbourhood;
     private TabuList tabu;
 
     private final RemissionList remissionList = new RemissionList();
 
     private ArrayList<Integer> currentSolution;
     private int currentCost;
-
     ArrayList<Integer> previousLocalBest;
-
     private int previousLocalBestCost;
-    public TabuSolver(int ageLimit, int iterations, boolean isIterDecAfter, boolean isRemissionEnabled)
+    public TabuSolver(int ageLimit, int iterations, boolean isIterDecAfter, boolean isRemissionEnabled, boolean isSwapNeighbourhood)
     {
         this.ageLimit = ageLimit;
         this.iterations = iterations;
         this.isIterDecAlways = isIterDecAfter;
         this.isRemissionEnabled = isRemissionEnabled;
+        this.isSwapNeighbourhood = isSwapNeighbourhood;
     }
 
     @Override
@@ -68,6 +68,7 @@ public class TabuSolver implements ProblemSolver{
                     {
                         continue;
                     }
+
 
                     ArrayList<Integer> newSolution = invert(i,j,localBest);
                     int newSolutionObjValue = ProblemSolution.getObjectiveValue(newSolution.get(newSolution.size()-1), newSolution, problemInstance);
@@ -170,4 +171,13 @@ public class TabuSolver implements ProblemSolver{
         return iterationsLeft;
     }
 
+    private ArrayList<Integer> getNeighbour(int i, int j, ArrayList<Integer> localBest)
+    {
+        if(isSwapNeighbourhood)
+        {
+            return swap(i,j,localBest);
+        }
+
+        return invert(i,j,localBest);
+    }
 }

@@ -45,7 +45,7 @@ public class TabuSolver implements ProblemSolver{
                         continue;
                     }
 
-                    ArrayList<Integer> newSolution = swap(i,j,localBest);
+                    ArrayList<Integer> newSolution = invert(i,j,localBest);
                     int newSolutionObjValue = ProblemSolution.getObjectiveValue(newSolution.get(newSolution.size()-1), newSolution, problemInstance);
                     if(newSolutionObjValue < localBestValue)
                     {
@@ -85,4 +85,13 @@ public class TabuSolver implements ProblemSolver{
 
         return newSol;
     }
+
+    private ArrayList<Integer> invert(int i, int j, ArrayList<Integer> prevSol)
+    {
+        ArrayList<Integer> newSol = new ArrayList<>(prevSol);
+        Collections.reverse(newSol.subList(i, j));
+
+        return newSol;
+    }
+
 }

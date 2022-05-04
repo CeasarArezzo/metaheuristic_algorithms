@@ -28,16 +28,11 @@ public class TabuSolver implements ProblemSolver{
         ArrayList<Integer> localBest;
         int currentCost = ProblemSolution.getObjectiveValue(currentSolution.get(currentSolution.size()-1), currentSolution, problemInstance);
 
-
-        boolean isRunning = true;
-        boolean isChosen;
         int iterationsLeft = iterations;
-        while(isRunning && iterationsLeft > 0)
+        while(iterationsLeft > 0)
         {
-            isChosen = false;
-            isRunning = false;
             localBest = new ArrayList<>(currentSolution);
-            int localBestValue = ProblemSolution.getObjectiveValue(currentSolution.get(currentSolution.size()-1), currentSolution, problemInstance);
+            int localBestValue = Integer.MAX_VALUE;
             int bestI = 0;
             int bestJ = 0;
 
@@ -50,7 +45,7 @@ public class TabuSolver implements ProblemSolver{
                         continue;
                     }
 
-                    ArrayList<Integer> newSolution = swap(i,j,currentSolution);
+                    ArrayList<Integer> newSolution = swap(i,j,localBest);
                     int newSolutionObjValue = ProblemSolution.getObjectiveValue(newSolution.get(newSolution.size()-1), newSolution, problemInstance);
                     if(newSolutionObjValue < localBestValue)
                     {
@@ -58,21 +53,18 @@ public class TabuSolver implements ProblemSolver{
                         localBest = new ArrayList<>(newSolution);
                         bestI = i;
                         bestJ = j;
-                        isChosen = true;
                     }
                 }
 
             }
-            if(isChosen)
+
+            tabu.insert(bestI, bestJ);
+            if (localBestValue < currentCost)
             {
-                tabu.insert(bestI, bestJ);
-                if (localBestValue < currentCost)
-                {
-                    currentSolution = new ArrayList<>(localBest);
-                    currentCost = localBestValue;
-                    isRunning = true;
-                }
+                currentSolution = new ArrayList<>(localBest);
+                currentCost = localBestValue;
             }
+
             iterationsLeft--;
 
         }

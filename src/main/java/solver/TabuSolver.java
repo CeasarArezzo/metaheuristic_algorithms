@@ -1,6 +1,8 @@
 package solver;
 
 import algs.ProblemInstance;
+import remission.RemissionList;
+import remission.RemissionListNode;
 import solution.ProblemSolution;
 import tabu.BasicTabuList;
 import tabu.TabuList;
@@ -12,25 +14,47 @@ public class TabuSolver implements ProblemSolver{
 
     private final int ageLimit;
     private final int iterations;
-    public TabuSolver(int ageLimit, int iterations)
+
+    private final boolean isIterDecAlways;
+
+    private final boolean isRemissionEnabled;
+
+    private TabuList tabu;
+
+    private final RemissionList remissionList = new RemissionList();
+
+    private ArrayList<Integer> currentSolution;
+    private int currentCost;
+
+    ArrayList<Integer> previousLocalBest;
+
+    private int previousLocalBestCost;
+    public TabuSolver(int ageLimit, int iterations, boolean isIterDecAfter, boolean isRemissionEnabled)
     {
         this.ageLimit = ageLimit;
         this.iterations = iterations;
+        this.isIterDecAlways = isIterDecAfter;
+        this.isRemissionEnabled = isRemissionEnabled;
     }
 
     @Override
     public ProblemSolution solveInstance(ProblemInstance problemInstance) {
 
         int dimension = problemInstance.getDimension();
-        TabuList tabu = new BasicTabuList(dimension, ageLimit);
+        tabu = new BasicTabuList(dimension, ageLimit);
 
-        ArrayList<Integer> currentSolution = generateRandomPath(dimension);
+        currentSolution = generateRandomPath(dimension);
         ArrayList<Integer> localBest;
-        int currentCost = ProblemSolution.getObjectiveValue(currentSolution.get(currentSolution.size()-1), currentSolution, problemInstance);
+        currentCost = ProblemSolution.getObjectiveValue(currentSolution.get(currentSolution.size()-1), currentSolution, problemInstance);
 
+        previousLocalBest = new ArrayList<>(currentSolution);
+        previousLocalBestCost = currentCost;
         int iterationsLeft = iterations;
+
+
         while(iterationsLeft > 0)
         {
+            boolean isChosen = false;
             localBest = new ArrayList<>(currentSolution);
             int localBestValue = Integer.MAX_VALUE;
             int bestI = 0;
@@ -53,25 +77,24 @@ public class TabuSolver implements ProblemSolver{
                         localBest = new ArrayList<>(newSolution);
                         bestI = i;
                         bestJ = j;
+                        isChosen = true;
                     }
                 }
 
             }
 
+            if(remissionPull(isChosen))
+            {
+                continue;
+            }
+
             tabu.insert(bestI, bestJ);
-            if (localBestValue < currentCost)
-            {
-                currentSolution = new ArrayList<>(localBest);
-                currentCost = localBestValue;
 
-            }
-            else
-            {
-                iterationsLeft--;
-            }
+            remissionPush();
 
+            iterationsLeft = updateIterationCounter(localBestValue, iterationsLeft);
 
-
+            updatePaths(localBest, localBestValue);
         }
 
         return new ProblemSolution(currentSolution.get(currentSolution.size()-1), currentCost, currentSolution, problemInstance);
@@ -92,6 +115,59 @@ public class TabuSolver implements ProblemSolver{
         Collections.reverse(newSol.subList(i, j));
 
         return newSol;
+    }
+
+    private boolean remissionPull(boolean isChosen)
+    {
+        if(isRemissionEnabled && !isChosen)
+        {
+            RemissionListNode remissionListNode = remissionList.getBestRemission();
+            tabu = remissionListNode.getTabuList();
+            currentSolution = new ArrayList<>(remissionListNode.getPath());
+            currentCost = remissionListNode.getObjectiveValue();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void remissionPush()
+    {
+        if(isRemissionEnabled)
+        {
+            remissionList.addNewRemission(previousLocalBest, previousLocalBestCost, tabu);
+        }
+    }
+
+    private void updatePaths(ArrayList<Integer> localBest, int localBestValue)
+    {
+        updateCurrentBest(localBest, localBestValue);
+        updatePreviousLocalBest(localBest, localBestValue);
+    }
+    private void updatePreviousLocalBest(ArrayList<Integer> localBest, int localBestValue)
+    {
+        previousLocalBest = new ArrayList<>(localBest);
+        previousLocalBestCost = localBestValue;
+    }
+
+    private void updateCurrentBest(ArrayList<Integer> localBest, int localBestValue)
+    {
+        if (localBestValue < currentCost)
+        {
+            currentSolution = new ArrayList<>(localBest);
+            currentCost = localBestValue;
+
+        }
+    }
+
+    private int updateIterationCounter(int localBestValue, int iterationsLeft)
+    {
+        if(isIterDecAlways || localBestValue < currentCost)
+        {
+            iterationsLeft--;
+        }
+
+        return iterationsLeft;
     }
 
 }

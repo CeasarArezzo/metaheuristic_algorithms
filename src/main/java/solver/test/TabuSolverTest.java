@@ -17,14 +17,13 @@ public class TabuSolverTest {
     @Test
     public void testSolveInstance() throws FileNotFoundException, WrongNumberException
     {
-        ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp" + "/a280.tsp");
+        ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp");
         ProblemSolver opt = new Opt2Solver();
-        ProblemSolver solver = new TabuSolver(30, 400);
+        ProblemSolver solver = new TabuSolver(30, 1000, true, true);
         ProblemSolution solution = solver.solveInstance(pI);
         ProblemSolution optSolution = opt.solveInstance(pI);
         System.out.println(solution.getObjectiveValue());
         System.out.println(optSolution.getObjectiveValue());
-//            assertEquals(solutions[i], solution.getObjectiveValue());
 
 
     }

@@ -23,10 +23,10 @@ public class MetaAlgs
     static String algVersion = "";
     
 //    TODO:
-//    wartoï¿½ï¿½ funkcji celu / rozmiar
-//    wartoï¿½ï¿½ funkcji celu z normalizacjï¿½ / rozmiar
-//    zï¿½oï¿½onoï¿½ï¿½ obliczeniowa / rozmiar
-//    k random / k
+//      - testy (tabelka w sprawku)
+//      - porownanie procentowe wartosci rozwiazan wzgledem iteracji/dlugosci listy/liczby iteracji (bez znalezienia nowego rozwiazania)
+//      - ^ dla obu s¹siedztw
+//        - flagi dla swap/insert, zmniejszanie iteracji zawsze lub jak nie znajdziemy lepszego, nawroty
 
     
     public static void main(String[] args)

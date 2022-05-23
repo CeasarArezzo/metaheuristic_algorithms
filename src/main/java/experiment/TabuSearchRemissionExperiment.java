@@ -33,7 +33,7 @@ public class TabuSearchRemissionExperiment
             
             int ageLimit = 50;
             writer.println("ITERATIONS Remissions NoRemissions");
-            for (int iterations = 100; iterations <= 3000; iterations += 200)
+            for (int iterations = 100; iterations <= 2500; iterations += 200)
             {
                 System.out.println("iterations " + iterations);
                 writer.print(iterations + " ");

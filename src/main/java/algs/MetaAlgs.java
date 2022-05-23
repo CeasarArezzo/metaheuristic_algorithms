@@ -39,12 +39,12 @@ public class MetaAlgs
     {
         System.out.println(System.getProperty("user.dir"));
 
-        TabuSearchExperiment.generateDataTests(); //checks iterations
-//        TabuSearchTimeEfficiencyExperiment.generateDataTests(); //DONE
-        TabuSearchAgeLimitExperiment.generateDataTests();
-        TabuSearchSwapInvert.generateDataTests();
-        TabuSearchTimeComplexityExperiment.generateDataTests();
-        TabuSearchRemissionExperiment.generateDataTests();
+//        TabuSearchExperiment.generateDataTests(); //checks iterations
+        TabuSearchTimeEfficiencyExperiment.generateDataTests(); //DONE
+//        TabuSearchAgeLimitExperiment.generateDataTests();
+//        TabuSearchSwapInvert.generateDataTests();
+//        TabuSearchTimeComplexityExperiment.generateDataTests();
+//        TabuSearchRemissionExperiment.generateDataTests();
         
 //        double[] x = new double[51];
 //        double[] y = new double[51]; 

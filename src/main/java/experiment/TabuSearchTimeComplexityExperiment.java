@@ -8,6 +8,9 @@ import algs.ProblemInstance;
 import generator.BasicTSPProblemGenerator;
 import parser.DataReader;
 import parser.WrongNumberException;
+import solver.ClosestNeighSolver;
+import solver.Opt2Solver;
+import solver.ProblemSolver;
 import solver.TabuSolver;
 
 public class TabuSearchTimeComplexityExperiment
@@ -27,23 +30,27 @@ public class TabuSearchTimeComplexityExperiment
             int ageLimit = 50;
             
             writer.println("TABU SEARCH TIME COMPLEXITY");
-            writer.println("size time");
-            for (int size = 50; size <= 3000; size += 200)
+            writer.println("size tabu 2opt closestNeigh");
+            for (int size = 50; size <= 500; size += 25)
             {
                 System.out.println("size " + size);
                 writer.print(size + " ");
                 float sum = 0;
-                TabuSolver solver = new TabuSolver(ageLimit, iterations, false, false, false);
+                ProblemSolver solvers[] = {new TabuSolver(ageLimit, iterations, false, false, false), new Opt2Solver(), new ClosestNeighSolver()};
                 ProblemInstance pI = getProblemInstance(size);
-                long start = System.nanoTime();
-                for (int repeats = 0; repeats < 5; repeats++)
+                for(ProblemSolver solver: solvers)
                 {
-                    solver.solveInstance(pI).getObjectiveValue();
+                    long start = System.nanoTime();
+                    for (int repeats = 0; repeats < 3; repeats++)
+                    {
+                        solver.solveInstance(pI).getObjectiveValue();
+                    }
+                    long finish = System.nanoTime();
+                    long timeElapsed = (finish - start) / 3 / 100;
+//                    System.out.println(sum);
+                    writer.print(timeElapsed + " ");
                 }
-                long finish = System.nanoTime();
-                long timeElapsed = (finish - start) / 5 / 100;
-//                System.out.println(sum);
-                writer.println(timeElapsed);
+                writer.println();
 
             }
             writer.close();

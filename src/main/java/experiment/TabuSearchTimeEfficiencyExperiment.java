@@ -32,30 +32,33 @@ public class TabuSearchTimeEfficiencyExperiment
                 problems[i] = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + problemNames[i]);
             }
             
-            writer.println("ITERATIONS time");
+            writer.println("ITERATIONS timeNoReset timeReset");
             for (int iterations = 100; iterations <= 2800; iterations += 250)
             {
                 System.out.println("iterations " + iterations);
                 writer.print(iterations + " ");
                 float sum = 0;
-                TabuSolver solver = new TabuSolver(40, iterations, false, false, false);
-                long start = System.nanoTime();
-                for (int problem = 0; problem < problems.length; problem++)
+                TabuSolver solvers[] = {new TabuSolver(130, iterations, false, false, false), new TabuSolver(130, iterations, true, false, false)};
+                for (TabuSolver solver: solvers)
                 {
-                    float sumTmp = 0;
-                    for (int repeats = 0; repeats < 3; repeats++)
+                    long start = System.nanoTime();
+                    for (int problem = 0; problem < problems.length; problem++)
                     {
-//                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
-                        sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
+                        float sumTmp = 0;
+                        for (int repeats = 0; repeats < 3; repeats++)
+                        {
+//                            System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
+                            sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
+                        }
+                        sumTmp = (sumTmp / 3 - problemExpectedValues[problem]) / problemExpectedValues[problem];
+                        sum += sumTmp;
                     }
-                    sumTmp = (sumTmp / 3 - problemExpectedValues[problem]) / problemExpectedValues[problem];
-                    sum += sumTmp;
+                    sum /= problems.length;
+                    long finish = System.nanoTime();
+                    long timeElapsed = finish - start;
+//                    System.out.println(sum);
+                    writer.print((100 - sum) / timeElapsed * 100 + " ");
                 }
-                sum /= problems.length;
-                long finish = System.nanoTime();
-                long timeElapsed = finish - start;
-//                System.out.println(sum);
-                writer.print((100 - sum) / timeElapsed * 100 + " ");
                 writer.println();
 
 //                ArrayList<ProblemSolver> problemSolvers = new ArrayList<>();

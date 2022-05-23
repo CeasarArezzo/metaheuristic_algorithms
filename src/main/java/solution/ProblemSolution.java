@@ -41,6 +41,13 @@ public class ProblemSolution
         path = new ArrayList<>();
     }
 
+    public ProblemSolution(ArrayList<Integer> path, ProblemInstance pInstance)
+    {
+        this.startingPoint = path.get(0);
+        this.objectiveValue = getObjectiveValue(startingPoint, path, pInstance);
+        this.path = path;
+        this.problemInstance = pInstance;
+    }
 
     public void addStep(int nextVertex)
     {

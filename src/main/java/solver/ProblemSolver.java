@@ -11,7 +11,7 @@ public interface ProblemSolver
 {
     ProblemSolution solveInstance(ProblemInstance problemInstance);
 
-    default public ArrayList<Integer> generateRandomPath(int dimension)
+    default ArrayList<Integer> generateRandomPath(int dimension)
     {
         ArrayList<Integer> range = new ArrayList<>(IntStream.rangeClosed(0, dimension - 1)
                 .boxed().toList());

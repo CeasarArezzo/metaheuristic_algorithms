@@ -7,11 +7,10 @@ import parser.WrongNumberException;
 import solution.ProblemSolution;
 import solver.Opt2Solver;
 import solver.ProblemSolver;
-import solver.TabuSolver;
 
 import java.io.FileNotFoundException;
 
-public class BeeColonySolver
+public class BeeColonySolverTest
 {
 
     @Test
@@ -19,7 +18,7 @@ public class BeeColonySolver
     {
         ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp");
         ProblemSolver opt = new Opt2Solver();
-        ProblemSolver solver0 = new solver.bees.BeeColonySolver(100, 5000);
+        ProblemSolver solver0 = new solver.bees.BeeColonySolver(200, 5000, 280);
 //        ProblemSolver solver1 = new TabuSolver(30, 600, false, false, true);
 //        ProblemSolver solver2 = new TabuSolver(30, 600, false, true, false);
         ProblemSolution solution0 = solver0.solveInstance(pI);

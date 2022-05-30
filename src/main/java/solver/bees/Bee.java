@@ -19,22 +19,23 @@ public class Bee implements Runnable
 
     private int failCounter = 0;
 
-    private final int failThreshold = 10;
+    private final int failThreshold;
 
     private BeePhase phase;
 
     private double fitOfMyPlace;
 
     private ArrayList<ArrayList<Integer>> allFoodSources;
-    private double[] allFoodSourcesFitness;
+    private double[] probs;
 
 
-    public Bee(ArrayList<Integer> yourPlace, ProblemInstance pInstance)
+    public Bee(ArrayList<Integer> yourPlace, ProblemInstance pInstance, int failThreshold)
     {
         this.pInstance = pInstance;
         myPlace = yourPlace;
         fitOfMyPlace = fitness(yourPlace);
         randomizer = new Random(System.currentTimeMillis());
+        this.failThreshold = failThreshold;
 
     }
     private ArrayList<Integer> findNeighbouringFoodSource()
@@ -93,7 +94,6 @@ public class Bee implements Runnable
             failCounter = 0;
         }
 
-        myPlace = new ArrayList<>(fitness(myPlace) > fitness(neighPlace) ? myPlace : neighPlace);
     }
 
     private void BeeOnlooker()
@@ -138,10 +138,10 @@ public class Bee implements Runnable
         phase = BeePhase.EmployBee;
     }
 
-    public void swapToOnlooker(ArrayList<ArrayList<Integer>> allFoodSources, double[] allFoodSourcesFitness)
+    public void swapToOnlooker(ArrayList<ArrayList<Integer>> allFoodSources, double[] probs)
     {
-        this.allFoodSources = new ArrayList<>(allFoodSources);
-        this.allFoodSourcesFitness = allFoodSourcesFitness;
+        this.allFoodSources = allFoodSources;
+        this.probs = probs;
         phase = BeePhase.Onlooker;
     }
 
@@ -156,27 +156,15 @@ public class Bee implements Runnable
         return myPlace;
     }
 
-    private double[] onlookerCalcProbs()
+
+    public double getFitness()
     {
-        double[] probs = new double[allFoodSourcesFitness.length];
-        double sum = 0.0;
-
-        for(double fit : allFoodSourcesFitness)
-        {
-            sum += fit;
-        }
-        probs[0] = allFoodSourcesFitness[0] / sum;
-        for(int i = 1; i < probs.length; i++)
-        {
-            probs[i] = allFoodSourcesFitness[i] / sum;
-        }
-
-        return probs;
+        return fitOfMyPlace;
     }
 
-    private int onlookerChooseFsIndex()
+
+    public int onlookerChooseFsIndex()
     {
-        double[] probs = onlookerCalcProbs();
 
         double random = ThreadLocalRandom.current().nextDouble(0.0, probs[probs.length - 1]);
 
@@ -190,13 +178,5 @@ public class Bee implements Runnable
 
         return probs.length- 1;
     }
-
-    public double getFitness()
-    {
-        return fitOfMyPlace;
-    }
-
-
-
 
 }

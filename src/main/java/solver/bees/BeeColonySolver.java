@@ -3,6 +3,7 @@ package solver.bees;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import algs.ProblemInstance;
 import solution.ProblemSolution;
@@ -17,12 +18,14 @@ public class BeeColonySolver implements ProblemSolver
     private ArrayList<Bee> beeColony;
     private final Thread[] beeThreads;
 
+    private final int threshold;
     private int iterations;
-    public BeeColonySolver(int populationSize, int iterations)
+    public BeeColonySolver(int populationSize, int iterations, int threshold)
     {
         this.populationSize = populationSize;
         this.iterations = iterations;
         beeThreads = new Thread[populationSize];
+        this.threshold = threshold;
 
     }
 
@@ -35,12 +38,13 @@ public class BeeColonySolver implements ProblemSolver
 
         for(int i = 0; i < populationSize; i++)
         {
-            beeColony.add(new Bee(foodSources.get(i), pInstance));
+            beeColony.add(new Bee(foodSources.get(i), pInstance, threshold));
         }
         ArrayList<Integer> bestSolution = findBest(foodSources.get(0));
         while( !terminationCriteriaFullfiled())
         {
-            System.out.println(iterations);
+            System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
+            System.out.println(" " + iterations);
             try
             {
                 double[] fitness = EmployeedBeePhase();
@@ -83,9 +87,10 @@ public class BeeColonySolver implements ProblemSolver
 
     private void OnlookerBeePhase(double[] fitness) throws InterruptedException
     {
+        double[] probs = onlookerCalcProbs(fitness);
         for(int i = 0; i < beeColony.size(); i++)
         {
-            beeColony.get(i).swapToOnlooker(foodSources, fitness);
+            beeColony.get(i).swapToOnlooker(foodSources, probs);
             beeThreads[i] = new Thread(beeColony.get(i));
         }
 
@@ -160,5 +165,25 @@ public class BeeColonySolver implements ProblemSolver
 
         return best;
     }
+
+    private double[] onlookerCalcProbs(double[] allFoodSourcesFitness)
+    {
+        double[] probs = new double[allFoodSourcesFitness.length];
+        double sum = 0.0;
+
+        for(double fit : allFoodSourcesFitness)
+        {
+            sum += fit;
+        }
+        probs[0] = allFoodSourcesFitness[0] / sum;
+        for(int i = 1; i < probs.length; i++)
+        {
+            probs[i] = probs[i-1] + allFoodSourcesFitness[i] / sum;
+        }
+
+        return probs;
+    }
+
+
 
 }

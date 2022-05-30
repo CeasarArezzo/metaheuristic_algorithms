@@ -1,9 +1,6 @@
 package solver.bees;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import algs.ProblemInstance;
 import solution.ProblemSolution;
@@ -11,15 +8,21 @@ import solver.ProblemSolver;
 
 public class BeeColonySolver implements ProblemSolver
 {
-    int populationSize;
+
+    //Problem fields//
     private ArrayList<ArrayList<Integer>> foodSources;
     private ProblemInstance pInstance;
 
+    //Bees//
     private ArrayList<Bee> beeColony;
     private final Thread[] beeThreads;
 
+    //Algorithm constants//
+    int populationSize;
     private final int threshold;
     private int iterations;
+
+
     public BeeColonySolver(int populationSize, int iterations, int threshold)
     {
         this.populationSize = populationSize;
@@ -47,7 +50,7 @@ public class BeeColonySolver implements ProblemSolver
             System.out.println(" " + iterations);
             try
             {
-                double[] fitness = EmployeedBeePhase();
+                double[] fitness = EmployedBeePhase();
                 bestSolution = findBest(bestSolution);
                 OnlookerBeePhase(fitness);
                 bestSolution = findBest(bestSolution);
@@ -65,7 +68,8 @@ public class BeeColonySolver implements ProblemSolver
         return new ProblemSolution(bestSolution, pInstance);
     }
 
-    private double[] EmployeedBeePhase() throws InterruptedException
+    //Bees flow control//
+    private double[] EmployedBeePhase() throws InterruptedException
     {
         double[] fitness = new double[beeColony.size()];
         for(int i = 0; i < beeColony.size(); i++)
@@ -74,7 +78,7 @@ public class BeeColonySolver implements ProblemSolver
             beeThreads[i] = new Thread(beeColony.get(i));
         }
 
-        runBees();
+        runBeeThreads();
 
         for(int i = 0; i < beeColony.size(); i++)
         {
@@ -87,14 +91,14 @@ public class BeeColonySolver implements ProblemSolver
 
     private void OnlookerBeePhase(double[] fitness) throws InterruptedException
     {
-        double[] probs = onlookerCalcProbs(fitness);
+        double[] probs = calcProbDistForOnlookerPhase(fitness);
         for(int i = 0; i < beeColony.size(); i++)
         {
             beeColony.get(i).swapToOnlooker(foodSources, probs);
             beeThreads[i] = new Thread(beeColony.get(i));
         }
 
-        runBees();
+        runBeeThreads();
 
         for(int i = 0; i < beeColony.size(); i++)
         {
@@ -111,7 +115,7 @@ public class BeeColonySolver implements ProblemSolver
             beeThreads[i] = new Thread(beeColony.get(i));
         }
 
-        runBees();
+        runBeeThreads();
 
         for(int i = 0; i < beeColony.size(); i++)
         {
@@ -120,22 +124,7 @@ public class BeeColonySolver implements ProblemSolver
 
     }
 
-    private boolean terminationCriteriaFullfiled()
-    {
-        return iterations == 0;
-    }
-
-    private void initializationPhase()
-    {
-        foodSources = new ArrayList<>();
-        int dimension = pInstance.getDimension();
-        for(int i = 0; i < populationSize; i++)
-        {
-            foodSources.add(generateRandomPath(dimension));
-        }
-    }
-
-    private void runBees() throws InterruptedException
+    private void runBeeThreads() throws InterruptedException
     {
         for (Thread beeThread : beeThreads)
         {
@@ -149,6 +138,8 @@ public class BeeColonySolver implements ProblemSolver
         }
     }
 
+
+    //Utils//
     private ArrayList<Integer> findBest(ArrayList<Integer> prevBest)
     {
         ArrayList<Integer> best = new ArrayList<>(prevBest);
@@ -166,7 +157,7 @@ public class BeeColonySolver implements ProblemSolver
         return best;
     }
 
-    private double[] onlookerCalcProbs(double[] allFoodSourcesFitness)
+    private double[] calcProbDistForOnlookerPhase(double[] allFoodSourcesFitness)
     {
         double[] probs = new double[allFoodSourcesFitness.length];
         double sum = 0.0;
@@ -184,6 +175,18 @@ public class BeeColonySolver implements ProblemSolver
         return probs;
     }
 
+    private boolean terminationCriteriaFullfiled()
+    {
+        return iterations == 0;
+    }
 
-
+    private void initializationPhase()
+    {
+        foodSources = new ArrayList<>();
+        int dimension = pInstance.getDimension();
+        for(int i = 0; i < populationSize; i++)
+        {
+            foodSources.add(generateRandomPath(dimension));
+        }
+    }
 }

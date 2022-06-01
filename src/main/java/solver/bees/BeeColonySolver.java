@@ -21,15 +21,19 @@ public class BeeColonySolver implements ProblemSolver
     int populationSize;
     private final int threshold;
     private int iterations;
+    
+    private final int beesPerThread;
+    private final int threadsNumber;
 
 
-    public BeeColonySolver(int populationSize, int iterations, int threshold)
+    public BeeColonySolver(int populationSize, int iterations, int threshold, int beesPerThread)
     {
         this.populationSize = populationSize;
         this.iterations = iterations;
-        beeThreads = new Thread[populationSize];
+        this.threadsNumber = (int) Math.ceil(populationSize / beesPerThread);
+        beeThreads = new Thread[threadsNumber];
         this.threshold = threshold;
-
+        this.beesPerThread = beesPerThread;
     }
 
     @Override
@@ -38,10 +42,15 @@ public class BeeColonySolver implements ProblemSolver
         pInstance = problemInstance;
         initializationPhase();
         beeColony = new ArrayList<>();
+        int subListBegin = 0;
+        int subListEnd = Math.min(beesPerThread, populationSize);
 
-        for(int i = 0; i < populationSize; i++)
+        for(int i = 0; i < threadsNumber; i++)
         {
-            beeColony.add(new Bee(foodSources.get(i), pInstance, threshold));
+            beeColony.add(new Bee((ArrayList<ArrayList<Integer>>) foodSources.subList(subListBegin, subListEnd),
+                    pInstance, threshold));
+            subListBegin += beesPerThread;
+            subListEnd = Math.min(subListEnd + beesPerThread, populationSize);
         }
         ArrayList<Integer> bestSolution = findBest(foodSources.get(0));
         while( !terminationCriteriaFullfiled())
@@ -82,8 +91,11 @@ public class BeeColonySolver implements ProblemSolver
 
         for(int i = 0; i < beeColony.size(); i++)
         {
-            foodSources.set(i, beeColony.get(i).getMyPlace());
-            fitness[i] = beeColony.get(i).getFitness();
+            for (int j = 0; j < beesPerThread; j++)
+            {
+                foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                fitness[i * beesPerThread + j] = beeColony.get(i).getFitness(j);
+            }
         }
 
         return fitness;
@@ -102,7 +114,10 @@ public class BeeColonySolver implements ProblemSolver
 
         for(int i = 0; i < beeColony.size(); i++)
         {
-            foodSources.set(i, beeColony.get(i).getMyPlace());
+            for (int j = 0; j < beesPerThread; j++)
+            {
+                foodSources.set(i, beeColony.get(i).getMyPlace(j));
+            }
         }
         
     }
@@ -119,7 +134,10 @@ public class BeeColonySolver implements ProblemSolver
 
         for(int i = 0; i < beeColony.size(); i++)
         {
-            foodSources.set(i, beeColony.get(i).getMyPlace());
+            for (int j = 0; j < beesPerThread; j++)
+            {
+                foodSources.set(i, beeColony.get(i).getMyPlace(j));
+            }
         }
 
     }

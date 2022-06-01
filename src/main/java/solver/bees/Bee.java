@@ -16,12 +16,12 @@ public class Bee implements Runnable
     private final Random randomizer;
 
     //Bee state//
-    private ArrayList<Integer> myPlace;
+    private ArrayList<ArrayList<Integer>> places;
     private BeePhase phase;
-    private double fitOfMyPlace;
+    private double fitOfMyPlaces[];
 
     //Fail control utils//
-    private int failCounter = 0;
+    private int[] failCounter;
     private final int failThreshold;
 
 
@@ -30,66 +30,72 @@ public class Bee implements Runnable
     private double[] foodSourceProbDist;
 
 
-    public Bee(ArrayList<Integer> yourPlace, ProblemInstance pInstance, int failThreshold)
+    public Bee(ArrayList<ArrayList<Integer>> places, ProblemInstance pInstance, int failThreshold)
     {
         this.pInstance = pInstance;
-        myPlace = yourPlace;
-        fitOfMyPlace = fitness(yourPlace);
+        this.places = places;
+        fitOfMyPlaces = new double[places.size()];
+        for (int i = 0; i < places.size(); i++)
+        {
+            fitOfMyPlaces[i] = fitness(places.get(i));
+        }
         randomizer = new Random(System.currentTimeMillis());
         this.failThreshold = failThreshold;
-
+        failCounter = new int[places.size()];
     }
 
     //main thread function//
     @Override
     public void run()
     {
-        switch (phase)
+        for (int i = 0; i < places.size(); i++)
         {
-            case EmployBee -> BeeEmployBee();
-            case Onlooker -> BeeOnlooker();
-            case Scout -> BeeScout();
+            switch (phase)
+            {
+                case EmployBee -> BeeEmployBee(i);
+                case Onlooker -> BeeOnlooker(i);
+                case Scout -> BeeScout(i);
+            }
         }
     }
 
     //Bee state jobs//
-    private void BeeEmployBee()
+    private void BeeEmployBee(int currentBee)
     {
-        ArrayList<Integer> neighPlace = findNeighbouringFoodSource();
-
-        if(fitness(myPlace) > fitness(neighPlace))
+        ArrayList<Integer> neighPlace = findNeighbouringFoodSource(currentBee);
+    
+        if(fitness(places.get(currentBee)) > fitness(neighPlace))
         {
-            failCounter++;
+            failCounter[currentBee]++;
         }
         else
         {
-            myPlace = new ArrayList<>(neighPlace);
-            fitOfMyPlace = fitness(myPlace);
-            failCounter = 0;
+            places.set(currentBee, new ArrayList<>(neighPlace));
+            fitOfMyPlaces[currentBee] = fitness(places.get(currentBee));
+            failCounter[currentBee] = 0;
         }
-
     }
 
-    private void BeeOnlooker()
+    private void BeeOnlooker(int currentBee)
     {
-        myPlace = new ArrayList<>(allFoodSources.get(onlookerChooseFsIndex()));
-        fitOfMyPlace = fitness(myPlace);
-        BeeEmployBee();
+        places.set(currentBee, new ArrayList<>(allFoodSources.get(onlookerChooseFsIndex())));
+        fitOfMyPlaces[currentBee] = fitness(places.get(currentBee));
+        BeeEmployBee(currentBee);
     }
 
-    private void BeeScout()
+    private void BeeScout(int currentBee)
     {
-        if(failCounter >= failThreshold)
+        if(failCounter[currentBee] >= failThreshold)
         {
-            myPlace = new ArrayList<>(IntStream.rangeClosed(0, pInstance.getDimension() - 1)
-                    .boxed().toList());
+            places.set(currentBee, new ArrayList<>(IntStream.rangeClosed(0, pInstance.getDimension() - 1)
+                    .boxed().toList()));
 
-            Collections.shuffle(myPlace);
-            fitOfMyPlace = fitness(myPlace);
+            Collections.shuffle(places.get(currentBee));
+            fitOfMyPlaces[currentBee] = fitness(places.get(currentBee));
         }
         else
         {
-            BeeEmployBee();
+            BeeEmployBee(currentBee);
         }
     }
 
@@ -114,14 +120,14 @@ public class Bee implements Runnable
 
 
     //Utils SECTION//
-    private ArrayList<Integer> findNeighbouringFoodSource()
+    private ArrayList<Integer> findNeighbouringFoodSource(int currentBee)
     {
-
-        int i = randomizer.nextInt(myPlace.size());
-        int j = i;
+        int sizeToRoll = places.get(0).size();
+        int i = randomizer.nextInt(sizeToRoll - 1); //8
+        int j = randomizer.nextInt(sizeToRoll - i - 1) + i + 1; //9,1
         while(j == i)
         {
-            j = randomizer.nextInt(myPlace.size());
+            j = randomizer.nextInt(places.get(0).size());
         }
         if(i > j)
         {
@@ -130,7 +136,7 @@ public class Bee implements Runnable
             i = temp;
         }
         //TODO implement flag
-        return invert(i, j, myPlace);
+        return invert(i, j, places.get(currentBee));
     }
 
     private double fitness(ArrayList<Integer> foodSource)
@@ -155,15 +161,15 @@ public class Bee implements Runnable
 
     }
 
-    public ArrayList<Integer> getMyPlace()
+    public ArrayList<Integer> getMyPlace(int currentBee)
     {
-        return myPlace;
+        return places.get(currentBee);
     }
 
 
-    public double getFitness()
+    public double getFitness(int currentBee)
     {
-        return fitOfMyPlace;
+        return fitOfMyPlaces[currentBee];
     }
 
 

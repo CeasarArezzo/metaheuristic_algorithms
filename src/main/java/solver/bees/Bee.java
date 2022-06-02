@@ -125,16 +125,7 @@ public class Bee implements Runnable
         int sizeToRoll = places.get(0).size();
         int i = randomizer.nextInt(sizeToRoll - 1); //8
         int j = randomizer.nextInt(sizeToRoll - i - 1) + i + 1; //9,1
-        while(j == i)
-        {
-            j = randomizer.nextInt(places.get(0).size());
-        }
-        if(i > j)
-        {
-            int temp = j;
-            j = i;
-            i = temp;
-        }
+        
         //TODO implement flag
         return invert(i, j, places.get(currentBee));
     }

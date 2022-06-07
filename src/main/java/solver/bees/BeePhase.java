@@ -4,5 +4,7 @@ public enum BeePhase
 {
     EmployBee,
     Onlooker,
-    Scout;
+    Scout,
+    Idle,
+    Done;
 }

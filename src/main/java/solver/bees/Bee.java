@@ -17,7 +17,6 @@ public class Bee implements Runnable
 
     //Bee state//
     private ArrayList<ArrayList<Integer>> places;
-    private BeePhase phase;
     private double fitOfMyPlaces[];
 
     //Fail control utils//
@@ -28,9 +27,11 @@ public class Bee implements Runnable
     //onlooker fields//
     private ArrayList<ArrayList<Integer>> allFoodSources;
     private double[] foodSourceProbDist;
+    private BeeColonySolver parent;
+    private boolean running = true;
 
 
-    public Bee(ArrayList<ArrayList<Integer>> places, ProblemInstance pInstance, int failThreshold)
+    public Bee(ArrayList<ArrayList<Integer>> places, ProblemInstance pInstance, int failThreshold, BeeColonySolver parent)
     {
         this.pInstance = pInstance;
         this.places = places;
@@ -42,20 +43,58 @@ public class Bee implements Runnable
         randomizer = new Random(System.currentTimeMillis());
         this.failThreshold = failThreshold;
         failCounter = new int[places.size()];
+        this.parent = parent;
     }
 
     //main thread function//
     @Override
     public void run()
     {
-        for (int i = 0; i < places.size(); i++)
+        try
         {
-            switch (phase)
+            while(running)
             {
-                case EmployBee -> BeeEmployBee(i);
-                case Onlooker -> BeeOnlooker(i);
-                case Scout -> BeeScout(i);
+                switch(parent.currentPhase)
+                {
+                    case EmployBee:
+                        System.out.println("employer");
+                        for (int i = 0; i < places.size(); i++)
+                        {
+                            BeeEmployBee(i);
+                        }
+                        parent.latch.countDown();
+                        break;
+                    case Onlooker:
+                        System.out.println("onlooker");
+                        for (int i = 0; i < places.size(); i++)
+                        {
+                            BeeOnlooker(i);
+                        }
+                        parent.latch.countDown();
+                        break;
+                    case Scout:
+                        System.out.println("scout");
+                        for (int i = 0; i < places.size(); i++)
+                        {
+                            BeeScout(i);
+                        }
+                        parent.latch.countDown();
+                        break;
+                    case Idle:
+                        synchronized (pInstance)
+                        {
+                            pInstance.wait();
+                        }
+                        break;
+                    case Done:
+                        running = false;
+                        break;
+                }
             }
+        } catch (InterruptedException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
@@ -100,22 +139,10 @@ public class Bee implements Runnable
     }
 
 
-    //Bee state swappers//
-    public void swapToEmployBee()
-    {
-        phase = BeePhase.EmployBee;
-    }
-
     public void swapToOnlooker(ArrayList<ArrayList<Integer>> allFoodSources, double[] probs)
     {
         this.allFoodSources = allFoodSources;
         this.foodSourceProbDist = probs;
-        phase = BeePhase.Onlooker;
-    }
-
-    public void swapToScout()
-    {
-        phase = BeePhase.Scout;
     }
 
 

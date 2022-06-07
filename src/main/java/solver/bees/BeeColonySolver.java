@@ -1,6 +1,7 @@
 package solver.bees;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import algs.ProblemInstance;
 import solution.ProblemSolution;
@@ -12,6 +13,7 @@ public class BeeColonySolver implements ProblemSolver
     //Problem fields//
     private ArrayList<ArrayList<Integer>> foodSources;
     private ProblemInstance pInstance;
+    public BeePhase currentPhase = BeePhase.Idle;
 
     //Bees//
     private ArrayList<Bee> beeColony;
@@ -24,13 +26,15 @@ public class BeeColonySolver implements ProblemSolver
     
     private final int beesPerThread;
     private final int threadsNumber;
+    public volatile int threadsRunning = 0;
+    public CountDownLatch latch;
 
 
     public BeeColonySolver(int populationSize, int iterations, int threshold, int beesPerThread)
     {
         this.populationSize = populationSize;
         this.iterations = iterations;
-        this.threadsNumber = (int) Math.ceil(populationSize / beesPerThread);
+        this.threadsNumber = (int) Math.ceil((float)populationSize / beesPerThread);
         beeThreads = new Thread[threadsNumber];
         this.threshold = threshold;
         this.beesPerThread = beesPerThread;
@@ -44,15 +48,31 @@ public class BeeColonySolver implements ProblemSolver
         beeColony = new ArrayList<>();
         int subListBegin = 0;
         int subListEnd = Math.min(beesPerThread, populationSize);
+        System.out.println("foodSources size - " + foodSources.size());
+        System.out.println("beesPerThread - " + beesPerThread);
+        System.out.println("threadsNumber - " + threadsNumber);
 
         for(int i = 0; i < threadsNumber; i++)
         {
-            beeColony.add(new Bee((ArrayList<ArrayList<Integer>>) foodSources.subList(subListBegin, subListEnd),
-                    pInstance, threshold));
+            beeColony.add(new Bee(new ArrayList<ArrayList<Integer>>(foodSources.subList(subListBegin, subListEnd)),
+                    pInstance, threshold, this));
+            System.out.println("thread " + i + ", range: " + subListBegin + " " + subListEnd);
             subListBegin += beesPerThread;
             subListEnd = Math.min(subListEnd + beesPerThread, populationSize);
         }
+        for(int i = 0; i < threadsNumber; i++)
+        {
+            beeThreads[i] = new Thread(beeColony.get(i));
+        }
         ArrayList<Integer> bestSolution = findBest(foodSources.get(0));
+        try
+        {
+            runBeeThreads();
+        } catch (InterruptedException e1)
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         while( !terminationCriteriaFullfiled())
         {
             System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
@@ -80,21 +100,26 @@ public class BeeColonySolver implements ProblemSolver
     //Bees flow control//
     private double[] EmployedBeePhase() throws InterruptedException
     {
-        double[] fitness = new double[beeColony.size()];
-        for(int i = 0; i < beeColony.size(); i++)
-        {
-            beeColony.get(i).swapToEmployBee();
-            beeThreads[i] = new Thread(beeColony.get(i));
-        }
+        double[] fitness = new double[populationSize];
 
-        runBeeThreads();
+        latch = new CountDownLatch(threadsNumber);
+        currentPhase = BeePhase.EmployBee;
+
+        synchronized (pInstance) 
+        {
+            pInstance.notifyAll();
+        }
+        latch.await();
 
         for(int i = 0; i < beeColony.size(); i++)
         {
             for (int j = 0; j < beesPerThread; j++)
             {
-                foodSources.set(i, beeColony.get(i).getMyPlace(j));
-                fitness[i * beesPerThread + j] = beeColony.get(i).getFitness(j);
+                if (i * beesPerThread + j < populationSize)
+                {
+                    foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                    fitness[i * beesPerThread + j] = beeColony.get(i).getFitness(j);
+                }
             }
         }
 
@@ -107,16 +132,25 @@ public class BeeColonySolver implements ProblemSolver
         for(int i = 0; i < beeColony.size(); i++)
         {
             beeColony.get(i).swapToOnlooker(foodSources, probs);
-            beeThreads[i] = new Thread(beeColony.get(i));
         }
 
-        runBeeThreads();
+        latch = new CountDownLatch(threadsNumber);
+        currentPhase = BeePhase.Onlooker;
+        
+        synchronized (pInstance) 
+        {
+            pInstance.notifyAll();
+        }
+        latch.await();
 
         for(int i = 0; i < beeColony.size(); i++)
         {
             for (int j = 0; j < beesPerThread; j++)
             {
-                foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                if (i * beesPerThread + j < populationSize)
+                {
+                    foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                }
             }
         }
         
@@ -124,22 +158,25 @@ public class BeeColonySolver implements ProblemSolver
 
     private void ScoutBeePhase() throws InterruptedException
     {
-        for(int i = 0; i < beeColony.size(); i++)
+        latch = new CountDownLatch(threadsNumber);
+        currentPhase = BeePhase.Scout;
+        
+        synchronized (pInstance) 
         {
-            beeColony.get(i).swapToScout();
-            beeThreads[i] = new Thread(beeColony.get(i));
+            pInstance.notifyAll();
         }
-
-        runBeeThreads();
+        latch.await();
 
         for(int i = 0; i < beeColony.size(); i++)
         {
             for (int j = 0; j < beesPerThread; j++)
             {
-                foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                if (i * beesPerThread + j < populationSize)
+                {
+                    foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                }
             }
         }
-
     }
 
     private void runBeeThreads() throws InterruptedException
@@ -147,12 +184,6 @@ public class BeeColonySolver implements ProblemSolver
         for (Thread beeThread : beeThreads)
         {
             beeThread.start();
-        }
-
-        for (Thread beeThread : beeThreads)
-        {
-            beeThread.join();
-
         }
     }
 

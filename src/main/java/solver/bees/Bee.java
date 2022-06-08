@@ -70,6 +70,7 @@ public class Bee implements Runnable
                         break;
                     case Onlooker:
 //                        System.out.println("onlooker " + parent.counter);
+//                        System.out.println(allFoodSources);
                         for (int i = 0; i < places.size(); i++)
                         {
                             BeeOnlooker(i);

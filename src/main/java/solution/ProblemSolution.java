@@ -43,7 +43,7 @@ public class ProblemSolution
 
     public ProblemSolution(ArrayList<Integer> path, ProblemInstance pInstance)
     {
-        this.startingPoint = path.get(0);
+        this.startingPoint = path.get(path.size() - 1);
         this.objectiveValue = getObjectiveValue(startingPoint, path, pInstance);
         this.path = path;
         this.problemInstance = pInstance;

@@ -18,7 +18,7 @@ public class BeeColonySolverTest
     {
         final ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp");
         ProblemSolver opt = new Opt2Solver();
-        ProblemSolver solver0 = new solver.bees.BeeColonySolver(280, 100000, 100, 4);
+        ProblemSolver solver0 = new solver.bees.BeeColonySolver(20, 60000, 100, 4);
 //        ProblemSolver solver1 = new TabuSolver(30, 600, false, false, true);
 //        ProblemSolver solver2 = new TabuSolver(30, 600, false, true, false);
         ProblemSolution solution0 = solver0.solveInstance(pI);

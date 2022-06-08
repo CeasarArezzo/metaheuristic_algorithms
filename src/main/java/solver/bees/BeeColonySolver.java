@@ -77,8 +77,8 @@ public class BeeColonySolver implements ProblemSolver
         }
         while( !terminationCriteriaFullfiled())
         {
-//            System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
-//            System.out.println(" " + iterations);
+            System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
+            System.out.println(" " + iterations);
             try
             {
                 double[] fitness = EmployedBeePhase();
@@ -127,7 +127,7 @@ public class BeeColonySolver implements ProblemSolver
             {
                 if (i * beesPerThread + j < populationSize)
                 {
-                    foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                    foodSources.set(i * beesPerThread + j, beeColony.get(i).getMyPlace(j));
                     fitness[i * beesPerThread + j] = beeColony.get(i).getFitness(j);
                 }
             }
@@ -161,7 +161,7 @@ public class BeeColonySolver implements ProblemSolver
             {
                 if (i * beesPerThread + j < populationSize)
                 {
-                    foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                    foodSources.set(i * beesPerThread + j, beeColony.get(i).getMyPlace(j));
                 }
             }
         }
@@ -187,7 +187,7 @@ public class BeeColonySolver implements ProblemSolver
             {
                 if (i * beesPerThread + j < populationSize)
                 {
-                    foodSources.set(i, beeColony.get(i).getMyPlace(j));
+                    foodSources.set(i * beesPerThread + j, beeColony.get(i).getMyPlace(j));
                 }
             }
         }
@@ -214,7 +214,7 @@ public class BeeColonySolver implements ProblemSolver
             {
                 best = foodSource;
                 bestValue = currValue;
-                System.out.println(iterations + " val: " + currValue);
+//                System.out.println(iterations + " val: " + currValue);
             }
         }
 

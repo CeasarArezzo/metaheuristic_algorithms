@@ -56,9 +56,9 @@ public class BeeColonyIterationsExperiment
 //                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
                     }
-                    writerNorm.print(sumTmp/5 + " ");
+                    writerNorm.print(sumTmp + " ");
                     writerNorm.print(iterations + " ");
-                    sumTmp = (sumTmp / 5 - problemExpectedValues[problem]) / problemExpectedValues[problem];
+                    sumTmp = (sumTmp - problemExpectedValues[problem]) / problemExpectedValues[problem];
                     writerEff.print(sumTmp + " ");
                     writerEff.print(iterations + " ");
 

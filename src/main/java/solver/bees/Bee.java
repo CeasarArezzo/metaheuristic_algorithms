@@ -57,28 +57,40 @@ public class Bee implements Runnable
                 switch(parent.currentPhase)
                 {
                     case EmployBee:
-                        System.out.println("employer");
+//                        System.out.println("employer " + parent.counter);
                         for (int i = 0; i < places.size(); i++)
                         {
                             BeeEmployBee(i);
                         }
-                        parent.latch.countDown();
+                        synchronized (pInstance)
+                        {
+                            parent.latch.countDown();
+                            pInstance.wait();
+                        }
                         break;
                     case Onlooker:
-                        System.out.println("onlooker");
+//                        System.out.println("onlooker " + parent.counter);
                         for (int i = 0; i < places.size(); i++)
                         {
                             BeeOnlooker(i);
                         }
-                        parent.latch.countDown();
+                        synchronized (pInstance)
+                        {
+                            parent.latch.countDown();
+                            pInstance.wait();
+                        }
                         break;
                     case Scout:
-                        System.out.println("scout");
+//                        System.out.println("scout " + parent.counter);
                         for (int i = 0; i < places.size(); i++)
                         {
                             BeeScout(i);
                         }
-                        parent.latch.countDown();
+                        synchronized (pInstance)
+                        {
+                            parent.latch.countDown();
+                            pInstance.wait();
+                        }
                         break;
                     case Idle:
                         synchronized (pInstance)

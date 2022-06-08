@@ -28,6 +28,8 @@ public class BeeColonySolver implements ProblemSolver
     private final int threadsNumber;
     public volatile int threadsRunning = 0;
     public CountDownLatch latch;
+    public CountDownLatch latch2;
+    public int counter = 0;
 
 
     public BeeColonySolver(int populationSize, int iterations, int threshold, int beesPerThread)
@@ -56,7 +58,7 @@ public class BeeColonySolver implements ProblemSolver
         {
             beeColony.add(new Bee(new ArrayList<ArrayList<Integer>>(foodSources.subList(subListBegin, subListEnd)),
                     pInstance, threshold, this));
-            System.out.println("thread " + i + ", range: " + subListBegin + " " + subListEnd);
+//            System.out.println("thread " + i + ", range: " + subListBegin + " " + subListEnd);
             subListBegin += beesPerThread;
             subListEnd = Math.min(subListEnd + beesPerThread, populationSize);
         }
@@ -75,8 +77,8 @@ public class BeeColonySolver implements ProblemSolver
         }
         while( !terminationCriteriaFullfiled())
         {
-            System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
-            System.out.println(" " + iterations);
+//            System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
+//            System.out.println(" " + iterations);
             try
             {
                 double[] fitness = EmployedBeePhase();
@@ -85,6 +87,7 @@ public class BeeColonySolver implements ProblemSolver
                 bestSolution = findBest(bestSolution);
                 ScoutBeePhase();
                 bestSolution = findBest(bestSolution);
+                counter++;
             }
             catch (InterruptedException e)
             {
@@ -92,6 +95,11 @@ public class BeeColonySolver implements ProblemSolver
             }
             iterations--;
 
+        }
+        currentPhase = BeePhase.Done;
+        synchronized (pInstance) 
+        {
+            pInstance.notifyAll();
         }
         
         return new ProblemSolution(bestSolution, pInstance);
@@ -110,6 +118,8 @@ public class BeeColonySolver implements ProblemSolver
             pInstance.notifyAll();
         }
         latch.await();
+        currentPhase = BeePhase.Idle;
+//        System.out.println("done");
 
         for(int i = 0; i < beeColony.size(); i++)
         {
@@ -142,6 +152,8 @@ public class BeeColonySolver implements ProblemSolver
             pInstance.notifyAll();
         }
         latch.await();
+        currentPhase = BeePhase.Idle;
+//        System.out.println("done");
 
         for(int i = 0; i < beeColony.size(); i++)
         {
@@ -166,6 +178,8 @@ public class BeeColonySolver implements ProblemSolver
             pInstance.notifyAll();
         }
         latch.await();
+        currentPhase = BeePhase.Idle;
+//        System.out.println("done");
 
         for(int i = 0; i < beeColony.size(); i++)
         {
@@ -200,6 +214,7 @@ public class BeeColonySolver implements ProblemSolver
             {
                 best = foodSource;
                 bestValue = currValue;
+                System.out.println(iterations + " val: " + currValue);
             }
         }
 

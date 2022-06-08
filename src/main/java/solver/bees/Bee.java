@@ -27,12 +27,14 @@ public class Bee implements Runnable
     //onlooker fields//
     private ArrayList<ArrayList<Integer>> allFoodSources;
     private double[] foodSourceProbDist;
+    private final BeeNeigh neighbourhoodType;
     private BeeColonySolver parent;
     private boolean running = true;
 
 
-    public Bee(ArrayList<ArrayList<Integer>> places, ProblemInstance pInstance, int failThreshold, BeeColonySolver parent)
+    public Bee(ArrayList<ArrayList<Integer>> places, ProblemInstance pInstance, int failThreshold, BeeNeigh neighbourhoodType, BeeColonySolver parent)
     {
+        this.neighbourhoodType = neighbourhoodType;
         this.pInstance = pInstance;
         this.places = places;
         fitOfMyPlaces = new double[places.size()];
@@ -165,9 +167,19 @@ public class Bee implements Runnable
         int sizeToRoll = places.get(0).size();
         int i = randomizer.nextInt(sizeToRoll - 1); //8
         int j = randomizer.nextInt(sizeToRoll - i - 1) + i + 1; //9,1
-        
+
         //TODO implement flag
-        return invert(i, j, places.get(currentBee));
+        return switch (neighbourhoodType)
+        {
+
+            case INVERT -> invert(i, j, places.get(currentBee));
+
+            case SWAP -> swap(i, j, places.get(currentBee));
+
+            case INSERT -> insert(i, j, places.get(currentBee));
+
+        };
+
     }
 
     private double fitness(ArrayList<Integer> foodSource)
@@ -187,6 +199,16 @@ public class Bee implements Runnable
     {
         ArrayList<Integer> newSol = new ArrayList<>(prevSol);
         Collections.reverse(newSol.subList(i, j));
+
+        return newSol;
+
+    }
+
+    public ArrayList<Integer> insert(int i, int j, ArrayList<Integer> prevSol)
+    {
+        ArrayList<Integer> newSol = new ArrayList<>(prevSol);
+        Integer J = newSol.remove(j);
+        newSol.add(i, J);
 
         return newSol;
 

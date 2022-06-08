@@ -3,6 +3,8 @@ package algs;
 import java.io.FileNotFoundException;
 
 import experiment.bees.BeeColonyBeeNumberExperiment;
+import experiment.bees.BeeColonyIterationsExperiment;
+import experiment.bees.BeeColonyVs2OptExperiment;
 import org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest;
 
 import experiment.AllObjectiveValExperiment;
@@ -46,7 +48,11 @@ public class MetaAlgs
 //        TabuSearchSwapInvert.generateDataTests();
 //        TabuSearchTimeComplexityExperiment.generateDataTests();
 //        TabuSearchRemissionExperiment.generateDataTests();
-        BeeColonyBeeNumberExperiment.generateDataTests();
+//        BeeColonyVs2OptExperiment.generateDataTests();
+        BeeColonyIterationsExperiment.generateDataTests();
+//        BeeColonyVs2OptExperiment.generateDataTests();
+//        BeeColonyVs2OptExperiment.generateDataTests();
+//        BeeColonyVs2OptExperiment.generateDataTests();
 //        double[] x = new double[51];
 //        double[] y = new double[51]; 
 //        for (int size = 1; size <= 25; size++)

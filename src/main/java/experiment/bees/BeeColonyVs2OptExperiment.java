@@ -52,7 +52,7 @@ public class BeeColonyVs2OptExperiment
                 writer.print(beeSumTmp/5 + " ");
                 writer.print(optSumTmp/5 + " ");
                 writer.println();
-
+                System.out.println(size);
             }
             writer.close();
         } catch (IOException e)

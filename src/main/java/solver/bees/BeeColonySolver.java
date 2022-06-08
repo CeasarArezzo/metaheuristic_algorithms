@@ -14,6 +14,7 @@ public class BeeColonySolver implements ProblemSolver
     private ArrayList<ArrayList<Integer>> foodSources;
     private ProblemInstance pInstance;
     public BeePhase currentPhase = BeePhase.Idle;
+    private final BeeNeigh neighbourhoodType;
 
     //Bees//
     private ArrayList<Bee> beeColony;
@@ -32,8 +33,9 @@ public class BeeColonySolver implements ProblemSolver
     public int counter = 0;
 
 
-    public BeeColonySolver(int populationSize, int iterations, int threshold, int beesPerThread)
+    public BeeColonySolver(BeeNeigh neighbourhoodType, int populationSize, int iterations, int threshold, int beesPerThread)
     {
+        this.neighbourhoodType = neighbourhoodType;
         this.populationSize = populationSize;
         this.iterations = iterations;
         this.threadsNumber = (int) Math.ceil((float)populationSize / beesPerThread);
@@ -50,14 +52,14 @@ public class BeeColonySolver implements ProblemSolver
         beeColony = new ArrayList<>();
         int subListBegin = 0;
         int subListEnd = Math.min(beesPerThread, populationSize);
-        System.out.println("foodSources size - " + foodSources.size());
-        System.out.println("beesPerThread - " + beesPerThread);
-        System.out.println("threadsNumber - " + threadsNumber);
+//        System.out.println("foodSources size - " + foodSources.size());
+//        System.out.println("beesPerThread - " + beesPerThread);
+//        System.out.println("threadsNumber - " + threadsNumber);
 
         for(int i = 0; i < threadsNumber; i++)
         {
             beeColony.add(new Bee(new ArrayList<ArrayList<Integer>>(foodSources.subList(subListBegin, subListEnd)),
-                    pInstance, threshold, this));
+                    pInstance, threshold, neighbourhoodType, this));
 //            System.out.println("thread " + i + ", range: " + subListBegin + " " + subListEnd);
             subListBegin += beesPerThread;
             subListEnd = Math.min(subListEnd + beesPerThread, populationSize);
@@ -77,8 +79,8 @@ public class BeeColonySolver implements ProblemSolver
         }
         while( !terminationCriteriaFullfiled())
         {
-            System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
-            System.out.println(" " + iterations);
+//            System.out.print(ProblemSolution.getObjectiveValue(bestSolution.get(bestSolution.size()-1), bestSolution, pInstance));
+//            System.out.println(" " + iterations);
             try
             {
                 double[] fitness = EmployedBeePhase();

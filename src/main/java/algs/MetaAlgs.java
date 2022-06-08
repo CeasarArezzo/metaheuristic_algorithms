@@ -2,6 +2,7 @@ package algs;
 
 import java.io.FileNotFoundException;
 
+import experiment.bees.BeeColonyBeeNumberExperiment;
 import org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest;
 
 import experiment.AllObjectiveValExperiment;
@@ -31,7 +32,7 @@ public class MetaAlgs
 //    TODO:
 //      - testy (tabelka w sprawku)
 //      - porownanie procentowe wartosci rozwiazan wzgledem iteracji/dlugosci listy/liczby iteracji (bez znalezienia nowego rozwiazania)
-//      - ^ dla obu s¹siedztw
+//      - ^ dla obu sï¿½siedztw
 //        - flagi dla swap/insert, zmniejszanie iteracji zawsze lub jak nie znajdziemy lepszego, nawroty
 
     
@@ -40,12 +41,12 @@ public class MetaAlgs
         System.out.println(System.getProperty("user.dir"));
 
 //        TabuSearchExperiment.generateDataTests(); //checks iterations
-        TabuSearchTimeEfficiencyExperiment.generateDataTests(); //DONE
+//        TabuSearchTimeEfficiencyExperiment.generateDataTests(); //DONE
 //        TabuSearchAgeLimitExperiment.generateDataTests();
 //        TabuSearchSwapInvert.generateDataTests();
 //        TabuSearchTimeComplexityExperiment.generateDataTests();
 //        TabuSearchRemissionExperiment.generateDataTests();
-        
+        BeeColonyBeeNumberExperiment.generateDataTests();
 //        double[] x = new double[51];
 //        double[] y = new double[51]; 
 //        for (int size = 1; size <= 25; size++)

@@ -18,7 +18,7 @@ public class BeeColonySolverTest
     {
         ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp");
         ProblemSolver opt = new Opt2Solver();
-        ProblemSolver solver0 = new solver.bees.BeeColonySolver(10, 5000, 280, 4);
+        ProblemSolver solver0 = new solver.bees.BeeColonySolver(10, 100000, 280, 4);
 //        ProblemSolver solver1 = new TabuSolver(30, 600, false, false, true);
 //        ProblemSolver solver2 = new TabuSolver(30, 600, false, true, false);
         ProblemSolution solution0 = solver0.solveInstance(pI);
@@ -27,8 +27,8 @@ public class BeeColonySolverTest
 //        System.out.println(solution2.getObjectiveValue());
 //        ProblemSolution solution1 = solver1.solveInstance(pI);
 //        System.out.println(solution1.getObjectiveValue());
-        ProblemSolution optSolution = opt.solveInstance(pI);
-        System.out.println(optSolution.getObjectiveValue());
+//        ProblemSolution optSolution = opt.solveInstance(pI);
+//        System.out.println(optSolution.getObjectiveValue());
         System.out.println("Expected: 2579");
 
 

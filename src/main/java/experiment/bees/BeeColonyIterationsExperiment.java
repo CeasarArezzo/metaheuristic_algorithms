@@ -40,7 +40,7 @@ public class BeeColonyIterationsExperiment
 
             writerNorm.println("EFFICIENCY1 ITERATIONS1 EFFICIENCY2 ITERATIONS2 EFFICIENCY3 ITERATIONS3 EFFICIENCY4 ITERATIONS4 EFFICIENCY5 ITERATIONS5 EFFICIENCY6 ITERATIONS6");
             writerEff.println("EFFICIENCY1 ITERATIONS1 EFFICIENCY2 ITERATIONS2 EFFICIENCY3 ITERATIONS3 EFFICIENCY4 ITERATIONS4 EFFICIENCY5 ITERATIONS5 EFFICIENCY6 ITERATIONS6");
-            for (int iterations = 100; iterations <= 100000; iterations += 10000)
+            for (int iterations = 100; iterations <= 50100; iterations += 5000)
             {
 //                System.out.println("ageLimit " + ageLimit);
 //                writer.print(ageLimit + " ");
@@ -51,15 +51,20 @@ public class BeeColonyIterationsExperiment
 
                     BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, problemSizes[problem], iterations, problemSizes[problem], 30);
                     float sumTmp = 0;
-                    for (int repeats = 0; repeats < 1; repeats++)
+                    int max = 3;
+                    long start = System.nanoTime();
+
+                    for (int repeats = 0; repeats < max ; repeats++)
                     {
 //                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
                     }
-                    writerNorm.print(sumTmp + " ");
+                    long finish = System.nanoTime();
+                    long timeElapsed = finish - start;
+                    writerNorm.print(sumTmp/ max + " ");
                     writerNorm.print(iterations + " ");
-                    sumTmp = (sumTmp - problemExpectedValues[problem]) / problemExpectedValues[problem];
-                    writerEff.print(sumTmp + " ");
+                    sumTmp = (sumTmp / max - problemExpectedValues[problem]) / problemExpectedValues[problem];
+                    writerEff.print((100 - sumTmp) / timeElapsed * 100 + " ");
                     writerEff.print(iterations + " ");
 
                 }

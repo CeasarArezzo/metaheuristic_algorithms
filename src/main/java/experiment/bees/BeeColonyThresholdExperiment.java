@@ -34,7 +34,7 @@ public class BeeColonyThresholdExperiment
                 problems[i] = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + problemNames[i]);
             }
 
-            int bestIterations = 4000;
+            int bestIterations = 10000;
             int beesPerThread = 30;
 
             writer.println("EFFICIENCY1 THRESHOLD1 THRESHOLD1% EFFICIENCY2 THRESHOLD2 THRESHOLD2% EFFICIENCY3 THRESHOLD3 THRESHOLD3% EFFICIENCY4 THRESHOLD4 THRESHOLD4% EFFICIENCY5 THRESHOLD5 THRESHOLD5% EFFICIENCY6 THRESHOLD6 THRESHOLD6%");
@@ -49,13 +49,18 @@ public class BeeColonyThresholdExperiment
 
                     BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, problemSizes[problem], bestIterations, threshold, beesPerThread);
                     float sumTmp = 0;
-                    for (int repeats = 0; repeats < 5; repeats++)
+                    int max = 3;
+                    long start = System.nanoTime();
+
+                    for (int repeats = 0; repeats < max; repeats++)
                     {
 //                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
                     }
-                    sumTmp = (sumTmp / 5 - problemExpectedValues[problem]) / problemExpectedValues[problem];
-                    writer.print(sumTmp + " ");
+                    long finish = System.nanoTime();
+                    long timeElapsed = finish - start;
+                    sumTmp = (sumTmp / max - problemExpectedValues[problem]) / problemExpectedValues[problem];
+                    writer.print((100 - sumTmp) / timeElapsed * 100 + " ");
                     writer.print(threshold + " ");
                     writer.print(threshold/problemSizes[problem] + " ");
 

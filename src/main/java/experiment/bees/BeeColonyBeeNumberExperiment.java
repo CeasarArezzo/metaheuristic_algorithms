@@ -34,7 +34,7 @@ public class BeeColonyBeeNumberExperiment
                 problems[i] = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + problemNames[i]);
             }
 
-            int bestIterations = 4000;
+            int bestIterations = 10000;
             int beesPerThread = 30;
 
             writer.println("EFFICIENCY1 BEES1 BEES1% EFFICIENCY2 BEES2 BEES2% EFFICIENCY3 BEES3 BEES3% EFFICIENCY4 BEES4 BEES4% EFFICIENCY5 BEES5 BEES5% EFFICIENCY6 BEES6 BEES6%");
@@ -46,16 +46,20 @@ public class BeeColonyBeeNumberExperiment
 
                 for (int problem = 0; problem < problems.length; problem++)
                 {
+                    long start = System.nanoTime();
 
                     BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, beesCount, bestIterations, problemSizes[problem], beesPerThread);
                     float sumTmp = 0;
-                    for (int repeats = 0; repeats < 5; repeats++)
+                    int max = 3;
+                    for (int repeats = 0; repeats < max; repeats++)
                     {
 //                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
                     }
-                    sumTmp = (sumTmp / 5 - problemExpectedValues[problem]) / problemExpectedValues[problem];
-                    writer.print(sumTmp + " ");
+                    long finish = System.nanoTime();
+                    long timeElapsed = finish - start;
+                    sumTmp = (sumTmp / max - problemExpectedValues[problem]) / problemExpectedValues[problem];
+                    writer.print((100 - sumTmp) / timeElapsed * 100 + " ");
                     writer.print(beesCount + " ");
                     writer.print(beesCount/problemSizes[problem] + " ");
 

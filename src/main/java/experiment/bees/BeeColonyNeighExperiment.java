@@ -24,7 +24,7 @@ public class BeeColonyNeighExperiment
             PrintWriter writer = new PrintWriter(filename, StandardCharsets.UTF_8);
 
             writer.println("Bees Neigh Expermient");
-            int iterations = 5000;
+            int iterations = 10000;
             int beesPerThread = 30;
 
             writer.println("Iterations Invert Swap Insert");
@@ -42,17 +42,18 @@ public class BeeColonyNeighExperiment
                 float invertSumTmp = 0;
                 float swapSumTmp = 0;
                 float insertSumTmp = 0;
-                for (int repeats = 0; repeats < 5; repeats++)
+                int max = 3;
+                for (int repeats = 0; repeats < max; repeats++)
                 {
                     invertSumTmp += beeInvertSolver.solveInstance(pI).getObjectiveValue();
                     swapSumTmp += beeSwapSolver.solveInstance(pI).getObjectiveValue();
-                    insertSumTmp += beeSwapSolver.solveInstance(pI).getObjectiveValue();
+                    insertSumTmp += beeInsertSolver.solveInstance(pI).getObjectiveValue();
                 }
 
                 writer.print(size + " ");
-                writer.print(invertSumTmp/5 + " ");
-                writer.print(swapSumTmp/5 + " ");
-                writer.print(insertSumTmp/5 + " ");
+                writer.print(invertSumTmp/max + " ");
+                writer.print(swapSumTmp/max + " ");
+                writer.print(insertSumTmp/max + " ");
                 writer.println();
 
             }

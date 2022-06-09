@@ -40,11 +40,12 @@ public class BeeColonyIterationsExperiment
 
             writerRaw.println("OBJECTIVE1 ITERATIONS1 OBJECTIVE2 ITERATIONS2 OBJECTIVE3 ITERATIONS3 OBJECTIVE4 ITERATIONS4 OBJECTIVE5 ITERATIONS5 OBJECTIVE6 ITERATIONS6");
             writerEff.println("EFFICIENCY1 ITERATIONS1 EFFICIENCY2 ITERATIONS2 EFFICIENCY3 ITERATIONS3 EFFICIENCY4 ITERATIONS4 EFFICIENCY5 ITERATIONS5 EFFICIENCY6 ITERATIONS6");
-            for (int iterations = 100; iterations <= 35100; iterations += 5000)
+            for (int iterations = 100; iterations <= 10100; iterations += 500)
             {
 //                System.out.println("ageLimit " + ageLimit);
 //                writer.print(ageLimit + " ");
 //                float sum = 0;
+                System.out.println(iterations);
 
                 for (int problem = 0; problem < problems.length; problem++)
                 {
@@ -55,8 +56,8 @@ public class BeeColonyIterationsExperiment
 
                     for (int repeats = 0; repeats < max ; repeats++)
                     {
-                        BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, problemSizes[problem], iterations, problemSizes[problem], 30);
 
+                        BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, problemSizes[problem], iterations, 100, 30);
 //                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         int res = solver.solveInstance(problems[problem]).getObjectiveValue();
                         sumTmp += res;
@@ -75,7 +76,6 @@ public class BeeColonyIterationsExperiment
                 writerEff.println();
                 writerRaw.flush();
                 writerEff.flush();
-                System.out.println(iterations);
 
             }
             writerRaw.close();

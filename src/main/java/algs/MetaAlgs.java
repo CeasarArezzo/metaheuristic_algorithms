@@ -48,7 +48,7 @@ public class MetaAlgs
 //        TabuSearchRemissionExperiment.generateDataTests();
 //        BeeColonyVs2OptExperiment.generateDataTests();
 //        BeeColonyIterationsExperiment.generateDataTests();
-        BeeColonyBeeNumberExperiment.generateDataTests();
+//        BeeColonyBeeNumberExperiment.generateDataTests();
 //        BeeColonyNeighExperiment.generateDataTests();
         BeeColonyThresholdExperiment.generateDataTests();
 //        double[] x = new double[51];

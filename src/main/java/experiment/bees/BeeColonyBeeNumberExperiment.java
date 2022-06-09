@@ -38,7 +38,7 @@ public class BeeColonyBeeNumberExperiment
             int beesPerThread = 30;
 
             writer.println("EFFICIENCY1 BEES1 BEES1% EFFICIENCY2 BEES2 BEES2% EFFICIENCY3 BEES3 BEES3% EFFICIENCY4 BEES4 BEES4% EFFICIENCY5 BEES5 BEES5% EFFICIENCY6 BEES6 BEES6%");
-            for (int beesCount = 1; beesCount <= 501; beesCount += 10)
+            for (int beesCount = 50; beesCount <= 400; beesCount += 50)
             {
 //                System.out.println("ageLimit " + ageLimit);
 //                writer.print(ageLimit + " ");
@@ -62,7 +62,7 @@ public class BeeColonyBeeNumberExperiment
                     sumTmp = (sumTmp / max - problemExpectedValues[problem]) / problemExpectedValues[problem];
                     writer.print((100 - sumTmp) / timeElapsed * 100 + " ");
                     writer.print(beesCount + " ");
-                    writer.print(beesCount/problemSizes[problem] + " ");
+                    writer.print((float)beesCount/problemSizes[problem] + " ");
 
                 }
                 writer.println();

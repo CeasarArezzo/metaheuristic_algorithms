@@ -34,11 +34,11 @@ public class BeeColonyThresholdExperiment
                 problems[i] = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + problemNames[i]);
             }
 
-            int bestIterations = 2000;
+            int bestIterations = 10000;
             int beesPerThread = 30;
 
             writer.println("OBJECTIVE1 THRESHOLD1 THRESHOLD1% OBJECTIVE2 THRESHOLD2 THRESHOLD2% OBJECTIVE3 THRESHOLD3 THRESHOLD3% OBJECTIVE4 THRESHOLD4 THRESHOLD4% OBJECTIVE5 THRESHOLD5 THRESHOLD5% OBJECTIVE6 THRESHOLD6 THRESHOLD6%");
-            for (int threshold = 1; threshold <= 20; threshold += 1)
+            for (int threshold = 50; threshold <= 400; threshold += 50)
             {
 //                System.out.println("ageLimit " + ageLimit);
 //                writer.print(ageLimit + " ");

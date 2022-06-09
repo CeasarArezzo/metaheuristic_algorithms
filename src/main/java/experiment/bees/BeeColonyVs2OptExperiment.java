@@ -19,8 +19,8 @@ public class BeeColonyVs2OptExperiment
 
         try
         {
-            int bestIterations = 4000;
-            int beesPerThread = 30;
+            int bestIterations = 40000;
+            int beesPerThread = 10;
 
             String filePath = System.getProperty("user.dir") + "/results/";
 
@@ -31,28 +31,30 @@ public class BeeColonyVs2OptExperiment
 
 
             writer.println("Iterations Bees Opt");
-            for (int size = 50; size <= 500; size += 50)
+            for (int size = 50; size <= 400; size += 50)
             {
 //                System.out.println("ageLimit " + ageLimit);
 //                writer.print(ageLimit + " ");
 //                float sum = 0;
                 ProblemInstance pI = problemGenerator.generateTSPProblemInstance(size);
 
-                Opt2Solver opt2Solver = new Opt2Solver();
                 float beeSumTmp = 0;
                 float optSumTmp = 0;
-                for (int repeats = 0; repeats < 5; repeats++)
+                int max = 3;
+                for (int repeats = 0; repeats < max; repeats++)
                 {
-                    BeeColonySolver beeSolver = new BeeColonySolver(BeeNeigh.INVERT, size, bestIterations, size, beesPerThread);
+                    BeeColonySolver beeSolver = new BeeColonySolver(BeeNeigh.INVERT, 2 * size, bestIterations, size, beesPerThread);
+                    Opt2Solver opt2Solver = new Opt2Solver();
 
                     beeSumTmp += beeSolver.solveInstance(pI).getObjectiveValue();
                     optSumTmp += opt2Solver.solveInstance(pI).getObjectiveValue();
                 }
 
                 writer.print(size + " ");
-                writer.print(beeSumTmp/5 + " ");
-                writer.print(optSumTmp/5 + " ");
+                writer.print(beeSumTmp/max + " ");
+                writer.print(optSumTmp/max + " ");
                 writer.println();
+                writer.flush();
                 System.out.println(size);
             }
             writer.close();

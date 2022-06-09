@@ -38,7 +38,7 @@ public class BeeColonyThresholdExperiment
             int beesPerThread = 30;
 
             writer.println("OBJECTIVE1 THRESHOLD1 THRESHOLD1% OBJECTIVE2 THRESHOLD2 THRESHOLD2% OBJECTIVE3 THRESHOLD3 THRESHOLD3% OBJECTIVE4 THRESHOLD4 THRESHOLD4% OBJECTIVE5 THRESHOLD5 THRESHOLD5% OBJECTIVE6 THRESHOLD6 THRESHOLD6%");
-            for (int threshold = 1; threshold <= 501; threshold += 10)
+            for (int threshold = 1; threshold <= 20; threshold += 1)
             {
 //                System.out.println("ageLimit " + ageLimit);
 //                writer.print(ageLimit + " ");

@@ -46,7 +46,8 @@ public class MetaAlgs
 //        TabuSearchSwapInvert.generateDataTests();
 //        TabuSearchTimeComplexityExperiment.generateDataTests();
 //        TabuSearchRemissionExperiment.generateDataTests();
-        BeeColonyVs2OptExperiment.generateDataTests();
+        BeeColonyBeesPerThreadExperiment.generateDataTests();
+//        BeeColonyVs2OptExperiment.generateDataTests();
 //        BeeColonyIterationsExperiment.generateDataTests();
 //        BeeColonyBeeNumberExperiment.generateDataTests();
 //        BeeColonyNeighExperiment.generateDataTests();

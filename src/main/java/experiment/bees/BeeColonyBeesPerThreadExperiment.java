@@ -37,7 +37,7 @@ public class BeeColonyBeesPerThreadExperiment
             int bestIterations = 2000;
             int threshold = 30;
 
-            writer.println("OBJECTIVE1 THRESHOLD1 THRESHOLD1% OBJECTIVE2 THRESHOLD2 THRESHOLD2% OBJECTIVE3 THRESHOLD3 THRESHOLD3% OBJECTIVE4 THRESHOLD4 THRESHOLD4% OBJECTIVE5 THRESHOLD5 THRESHOLD5% OBJECTIVE6 THRESHOLD6 THRESHOLD6%");
+            writer.println("OBJECTIVE1 BPT1 BPT1% OBJECTIVE2 BPT2 BPT2% OBJECTIVE3 BPT3 BPT3% OBJECTIVE4 BPT4 BPT4% OBJECTIVE5 BPT5 BPT5% OBJECTIVE6 BPT6 BPT6%");
             for (int bpt = 1; bpt <= 20; bpt += 1)
             {
                 System.out.println(bpt);
@@ -50,21 +50,17 @@ public class BeeColonyBeesPerThreadExperiment
 
                     float sumTmp = 0;
                     int max = 3;
-//                    long start = System.nanoTime();
 
                     for (int repeats = 0; repeats < max; repeats++)
                     {
                         BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, problemSizes[problem], bestIterations, threshold, bpt);
 
-//                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
                     }
-//                    long finish = System.nanoTime();
-//                    long timeElapsed = finish - start;
-//                    sumTmp = (sumTmp / max - problemExpectedValues[problem]) / problemExpectedValues[problem];
+
                     writer.print(sumTmp/max+ " ");
-                    writer.print(threshold + " ");
-                    writer.print((float)threshold/problemSizes[problem] + " ");
+                    writer.print(bpt + " ");
+                    writer.print((float)bpt/problemSizes[problem] + " ");
 
                 }
                 writer.println();

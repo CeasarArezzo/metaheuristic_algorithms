@@ -23,7 +23,7 @@ public class BeeColonyVs2OptRealExperiment
         {
             String filePath = System.getProperty("user.dir") + "/results/";
 
-            String filename = filePath + "Bee vs 2Opt Real Experiment" + ".txt";
+            String filename = filePath + "Beevs2OptRealExperiment" + ".txt";
             PrintWriter writer = new PrintWriter(filename, StandardCharsets.UTF_8);
 
             writer.println("berlin52 " + "pr107 " + "pr152 " + "gr120 " +  "eil101 " + "a280");

@@ -47,13 +47,14 @@ public class BeeColonyThresholdExperiment
                 for (int problem = 0; problem < problems.length; problem++)
                 {
 
-                    BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, problemSizes[problem], bestIterations, threshold, beesPerThread);
                     float sumTmp = 0;
                     int max = 3;
 //                    long start = System.nanoTime();
 
                     for (int repeats = 0; repeats < max; repeats++)
                     {
+                        BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, problemSizes[problem], bestIterations, threshold, beesPerThread);
+
 //                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
                     }
@@ -66,6 +67,7 @@ public class BeeColonyThresholdExperiment
 
                 }
                 writer.println();
+                writer.flush();
                 System.out.println(threshold);
             }
             writer.close();

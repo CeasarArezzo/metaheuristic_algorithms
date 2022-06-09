@@ -38,12 +38,13 @@ public class BeeColonyVs2OptExperiment
 //                float sum = 0;
                 ProblemInstance pI = problemGenerator.generateTSPProblemInstance(size);
 
-                BeeColonySolver beeSolver = new BeeColonySolver(BeeNeigh.INVERT, size, bestIterations, size, beesPerThread);
                 Opt2Solver opt2Solver = new Opt2Solver();
                 float beeSumTmp = 0;
                 float optSumTmp = 0;
                 for (int repeats = 0; repeats < 5; repeats++)
                 {
+                    BeeColonySolver beeSolver = new BeeColonySolver(BeeNeigh.INVERT, size, bestIterations, size, beesPerThread);
+
                     beeSumTmp += beeSolver.solveInstance(pI).getObjectiveValue();
                     optSumTmp += opt2Solver.solveInstance(pI).getObjectiveValue();
                 }

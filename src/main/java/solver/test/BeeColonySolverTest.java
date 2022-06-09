@@ -17,9 +17,9 @@ public class BeeColonySolverTest
     @Test
     public void testSolveInstance() throws FileNotFoundException, WrongNumberException
     {
-        ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "a280.tsp");
+        ProblemInstance pI = DataReader.readFileForGraphMatrix(System.getProperty("user.dir") + "/data/tsp/" + "pr152.tsp");
         ProblemSolver opt = new Opt2Solver();
-        ProblemSolver solver0 = new solver.bees.BeeColonySolver(BeeNeigh.INVERT, 10, 5000, 280, 4);
+        ProblemSolver solver0 = new solver.bees.BeeColonySolver(BeeNeigh.INVERT, 152, 15000, 152, 20);
 //        ProblemSolver solver1 = new TabuSolver(30, 600, false, false, true);
 //        ProblemSolver solver2 = new TabuSolver(30, 600, false, true, false);
         ProblemSolution solution0 = solver0.solveInstance(pI);

@@ -55,6 +55,7 @@ public class BeeColonyNeighExperiment
                 writer.print(swapSumTmp/max + " ");
                 writer.print(insertSumTmp/max + " ");
                 writer.println();
+                writer.flush();
 
             }
             writer.close();

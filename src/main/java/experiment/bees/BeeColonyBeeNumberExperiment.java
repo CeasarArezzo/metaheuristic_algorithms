@@ -48,11 +48,12 @@ public class BeeColonyBeeNumberExperiment
                 {
                     long start = System.nanoTime();
 
-                    BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, beesCount, bestIterations, problemSizes[problem], beesPerThread);
                     float sumTmp = 0;
                     int max = 3;
                     for (int repeats = 0; repeats < max; repeats++)
                     {
+                        BeeColonySolver solver = new BeeColonySolver(BeeNeigh.INVERT, beesCount, bestIterations, problemSizes[problem], beesPerThread);
+
 //                        System.out.println("\t" + solver.solveInstance(problems[problem]).getObjectiveValue());
                         sumTmp += solver.solveInstance(problems[problem]).getObjectiveValue();
                     }
@@ -65,6 +66,7 @@ public class BeeColonyBeeNumberExperiment
 
                 }
                 writer.println();
+                writer.flush();
 
             }
             writer.close();
